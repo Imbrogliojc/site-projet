@@ -1,0 +1,12 @@
+.navbar .nav-link-custom:not(.active):hover {
+  text-decoration: underline;
+  text-decoration-color: var(--bs-warning);
+  text-underline-offset: 3px;
+}
+
+.navbar .nav-link-custom.active[aria-current="page"] {
+  color: var(--bs-warning);
+  text-decoration: underline;
+  text-decoration-color: var(--bs-warning);
+  text-underline-offset: 3px;
+}
