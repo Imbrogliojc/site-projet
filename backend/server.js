@@ -1,6 +1,8 @@
 import express from "express";
 import { env } from "./config/index.js";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
 // ROUTES
 import userRoutes from './routes/user.router.js'
@@ -18,7 +20,9 @@ mongoose
     .catch(error => console.log(error))
 
 // MIDDLEWARE
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors());
 
 // PREFIX ROUTES
 app.use('/api/user', userRoutes)
