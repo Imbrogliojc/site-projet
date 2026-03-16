@@ -9,7 +9,7 @@ router.post('/signup', signup)
 router.post('/sign', sign)
 router.get('/get', getUsers)
 router.get('/get/:id', getUserById)
-router.delete('/delet/:id', verifieToken, deleteUser)
+router.delete('/delete/:id', verifieToken, deleteUser)
 router.put('/update/:id', verifieToken, updateUser)
 
 export default router

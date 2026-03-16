@@ -31,9 +31,9 @@ export const sign = async (req, res, next) => {
             sameSite: 'strict',
             maxAge: 24 * 60 * 60 * 1000
         })
-            .status(200
+            .status(200)
             .json(others)
-            )
+            
     } catch (error) {
         next(error)
     }
@@ -85,7 +85,7 @@ export const updateUser = async (req, res, next) => {
     try {
         const user = await Model.findById(req.params.id)
         if (!user) return res.status(404).json('User not found !')
-        const updateUser = await Model.findByIdAndUpdate(
+        const userUpdated = await Model.findByIdAndUpdate(
             req.params.id,
             { $set: req.body },
             { new: true }

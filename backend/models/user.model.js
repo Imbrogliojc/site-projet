@@ -13,13 +13,13 @@ const userSchema = mongoose.Schema(
             type: String, required: true
         },
         Active: {
-            type: Boolean, requiread: true, default: false
+            type: Boolean, required: true, default: false
         },
         role: {
             type: String, enum: ['user', 'admin', 'superAdmin'], default: 'user'
         }
     },
-    { timeStamps: { createdAt: true } }
+    { timestamps: { createdAt: true } }
 )
 
 userSchema.plugin(mongooseUniqueValidator)

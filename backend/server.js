@@ -6,6 +6,8 @@ import cors from "cors";
 
 // ROUTES
 import userRoutes from './routes/user.router.js'
+import serviceRoutes from './routes/service.router.js'
+import addressRoutes from './routes/address.router.js'
 
 // APP EXPRESS
 const app = express();
@@ -26,6 +28,8 @@ app.use(cors());
 
 // PREFIX ROUTES
 app.use('/api/user', userRoutes)
+app.use('/api/service', serviceRoutes)
+app.use('/api/address', addressRoutes)
 
 // SERVER
 app.listen(PORT, () => {
