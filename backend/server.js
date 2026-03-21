@@ -8,6 +8,8 @@ import cors from "cors";
 import userRoutes from './routes/user.router.js'
 import serviceRoutes from './routes/service.router.js'
 import addressRoutes from './routes/address.router.js'
+import devisRoutes from './routes/devis.router.js'
+import reservationRoutes from './routes/reservation.router.js'
 
 // APP EXPRESS
 const app = express();
@@ -30,6 +32,8 @@ app.use(cors());
 app.use('/api/user', userRoutes)
 app.use('/api/service', serviceRoutes)
 app.use('/api/address', addressRoutes)
+app.use('/api/devis', devisRoutes)
+app.use('/api/reservation', reservationRoutes)
 
 // SERVER
 app.listen(PORT, () => {
