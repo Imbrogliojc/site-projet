@@ -5,7 +5,6 @@ import { FIELD_LOGIN } from "../../utils/constants/FieldLogin.js";
 const Login = () => {
 
     const { login, error, isLoading } = useContext(AuthContext)
-
     const [user, setUser] = useState({
         email: "",
         password: ""
@@ -20,6 +19,9 @@ const Login = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        if(!user.email || !user.password) {
+            return
+        }
         login(user)
     }
 
@@ -28,8 +30,9 @@ const Login = () => {
 
             {FIELD_LOGIN.map((field) => (
                 <div key={field.id}>
-                    <label>{field.label}</label>
+                    <label htmlFor={field.id}>{field.label}</label>
                     <input
+                        id={field.id}
                         type={field.type}
                         name={field.name}
                         placeholder={field.placeholder}

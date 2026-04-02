@@ -16,7 +16,7 @@ export const HEADER_LINK = [
         label:'Demande de devis'
     },
     {
-        path :'/auth',
+        path :'/login',
         label:'Connexion / Inscription'
     },
     {

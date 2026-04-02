@@ -2,10 +2,11 @@ import { createContext, useState } from "react";
 import { useNavigate } from "react-router";
 
 // POUR COMMUNIQUER AVEC L'API
-import URL from "../config/api.js";
+import URL from "../../config/api.js";
 import axios from "axios";
 import { toast, Bounce } from "react-toastify";
 
+// AuthContext centralise les données d’authentification et les rend accessibles à toute l’application via le Provider
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -39,23 +40,31 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const register = async (dataForm) => {
+        setIsLoading(true)
+        try {
+            const response = await axios.post(
+                URL.REGISTER,
+                dataForm
+            )
+            console.log("Register succes :", response.data)
+            setError(null)
+            toast.success("Inscription réussie !")
+            navigate('/login')
+
+        } catch (error){
+            console.log("Register error :", error)
+            setError("Erreur lors de l'inscription !")
+            toast.error("Erreur lors de l'inscription !")
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ currentUser, login, error, isLoading }}>
+        <AuthContext.Provider value={{ currentUser, login, register, error, isLoading }}>
             {children}
         </AuthContext.Provider>
     )
 
 }
-
-// const register = async (dataForm) => {
-//     try {
-//         const response = await axios.post(
-//             URL_REGISTER,
-//             dataForm
-//         )
-//         console.log("Register success :", response.data)
-
-//     } catch (error) {
-//         console.log("Register error :", error)
-//     }
-// }
