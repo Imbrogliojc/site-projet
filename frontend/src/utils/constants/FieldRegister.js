@@ -1,6 +1,6 @@
 export const FIELD_REGISTER = [
     {
-        name: "name",
+        name: "userName",
         type: "text",
         id: "name",
         label: "Nom",

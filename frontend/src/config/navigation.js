@@ -16,10 +16,6 @@ export const HEADER_LINK = [
         label:'Demande de devis'
     },
     {
-        path :'/login',
-        label:'Connexion / Inscription'
-    },
-    {
         path :'/profil',
         label:'Mon profil'
     },

@@ -7,9 +7,9 @@ import Home from './pages/Home/Home'
 import Services from './pages/Services/Services'
 import Realisations from './pages/Realisations/Realisations'
 import Devis from './pages/Devis/Devis'
-import Auth from './pages/Auth/Login'
 import Profil from './pages/Profil/Profil'
 import Contact from './pages/Contact/Contact'
+import Register from './pages/Auth/Register'
 import Login from './pages/Auth/Login'
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
         <Route path='services' element={<Services />} />
         <Route path='realisations' element={<Realisations />} />
         <Route path='devis' element={<Devis />} />
+        <Route path='register' element={<Register />} />
         <Route path='login' element={<Login />} />
         <Route path='profil' element={<Profil />} />
         <Route path='contact' element={<Contact />} />

@@ -6,7 +6,7 @@ const Register = () => {
 
     const { register, error, isLoading } = useContext(AuthContext)
     const [user, setUser] = useState({
-        name:"",
+        userName:"",
         email:"",
         password:"",
         confirmPassword:""
@@ -21,7 +21,7 @@ const Register = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        if (!user.name || !user.email || !user.password || !user.confirmPassword) {
+        if (!user.userName || !user.email || !user.password || !user.confirmPassword) {
             return
         }
         const { confirmPassword, ...dataToSend } = user

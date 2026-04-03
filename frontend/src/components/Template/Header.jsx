@@ -1,4 +1,6 @@
 import React from 'react'
+import { useContext } from 'react'
+import { AuthContext } from '../../utils/context/AuthContext.jsx'
 
 // Import { HEADER_LINK } from './Header.js'
 import { HEADER_LINK } from '../../config/navigation'
@@ -10,6 +12,7 @@ import { Link, NavLink } from 'react-router-dom'
 import './header.css'
 
 const Header = () => {
+    const { currentUser, logout } = useContext(AuthContext)
     return (
         <header>Header
 
@@ -50,15 +53,44 @@ const Header = () => {
 
                                     <NavLink
                                         to={Link.path}
-                                        className={({ isActive }) => 
-                                        `nav-link nav-link-custom ${isActive ? 'active' : ''}`
-                                    }
-                                        >
+                                        className={({ isActive }) =>
+                                            `nav-link nav-link-custom ${isActive ? 'active' : ''}`
+                                        }
+                                    >
                                         {Link.label}
                                     </NavLink>
 
                                 </li>
-                            ))}                          
+                            ))}
+                            {!currentUser ? (
+                                <>
+                                    <li className="nav-item">
+                                        <NavLink to="/login" className="nav-link nav-link-custom">
+                                            Connexion
+                                        </NavLink>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <NavLink to="/register" className="nav-link nav-link-custom">
+                                            Inscription
+                                        </NavLink>
+                                    </li>
+                                </>
+                            ) : (
+                                <>
+                                    <li className="nav-item">
+                                        <NavLink to="/profil" className="nav-link nav-link-custom">
+                                            Mon profil
+                                        </NavLink>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <button onClick={logout} className="nav-link nav-link-custom">
+                                            Déconnexion
+                                        </button>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </div>
                 </div>

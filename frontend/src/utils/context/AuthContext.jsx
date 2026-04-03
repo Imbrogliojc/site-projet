@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 // POUR COMMUNIQUER AVEC L'API
@@ -16,6 +16,10 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        isLoggedIn()
+    }, [])
+
     const login = async (dataForm) => {
         setIsLoading(true)
         try {
@@ -25,6 +29,7 @@ export const AuthProvider = ({ children }) => {
                 { withCredentials: true }
             )
             console.log("Login success :", response.data)
+            localStorage.setItem("auth", JSON.stringify(response.data))
 
             setCurrentUser(response.data)
             setError(null)
@@ -61,8 +66,29 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const isLoggedIn = () => {
+        setIsLoading(true)
+        try {
+            const data = localStorage.getItem("auth")
+            setCurrentUser(data ? JSON.parse(data) : null)
+
+        } catch (error) {
+            console.log("Erreur localStorage :", error)
+            setCurrentUser(null)
+
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const logout = () => {
+        setCurrentUser(null)
+        localStorage.removeItem("auth")
+        navigate('/')
+    }
+
     return (
-        <AuthContext.Provider value={{ currentUser, login, register, error, isLoading }}>
+        <AuthContext.Provider value={{ currentUser, login, register, logout, error, isLoading }}>
             {children}
         </AuthContext.Provider>
     )
