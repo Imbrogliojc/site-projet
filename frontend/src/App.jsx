@@ -2,8 +2,14 @@ import { Route, Routes } from 'react-router-dom'
 import './App.css'
 
 // IMPORT DES TEMPLATES
+import TemplateAdmin from "./components/Template/TemplateAdmin.jsx"
+
 // IMPORT DES SERVICES
+import AdminServices from "./pages/Admin/Services/AdminServices.jsx"
+
 // IMPORT DES PAGES ADMINISTRATEUR
+import Dashboard from "./pages/Admin/Dashboard.jsx"
+
 // IMPORT DES PAGES PUBLIQUES
 import Template from './components/Template/Template'
 import Home from './pages/Home/Home'
@@ -25,7 +31,6 @@ function App() {
 
       {/* ROUTES PUBLIQUES */}
       {/* ROUTES PRIVEES */}
-      {/* ROUTES ADMINISTRATEURS */}
 
       <Route path='/' element={<Template />}>
 
@@ -40,6 +45,12 @@ function App() {
 
         <Route element={<PrivateRoute />}>
           <Route path='profil' element={<Profil />} />
+        </Route>
+
+      {/* ROUTES ADMINISTRATEURS */}
+        <Route path="admin" element={<TemplateAdmin />}>
+          <Route index element={<Dashboard />} />
+          <Route path="services" element={<AdminServices />} />
         </Route>
 
 
