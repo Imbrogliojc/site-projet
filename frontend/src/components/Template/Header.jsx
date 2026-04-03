@@ -66,18 +66,24 @@ const Header = () => {
                                 <>
                                     <li className="nav-item">
                                         <NavLink to="/login" className="nav-link nav-link-custom">
-                                            Connexion
+                                            Se connecter
                                         </NavLink>
                                     </li>
 
                                     <li className="nav-item">
                                         <NavLink to="/register" className="nav-link nav-link-custom">
-                                            Inscription
+                                            Créer un compte
                                         </NavLink>
                                     </li>
                                 </>
                             ) : (
                                 <>
+                                    <li className="nav-item">
+                                        <span className="nav-link">
+                                            Bonjour {currentUser?.userName}
+                                        </span>
+                                    </li>
+
                                     <li className="nav-item">
                                         <NavLink to="/profil" className="nav-link nav-link-custom">
                                             Mon profil
@@ -85,7 +91,7 @@ const Header = () => {
                                     </li>
 
                                     <li className="nav-item">
-                                        <button onClick={logout} className="nav-link nav-link-custom">
+                                        <button type="button" onClick={logout} className="nav-link nav-link-custom">
                                             Déconnexion
                                         </button>
                                     </li>

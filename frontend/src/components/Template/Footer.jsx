@@ -13,28 +13,28 @@ const Footer = () => {
       {/* TODO: Mettre en page avec Bootstrap (ex: container-fluid + row/cols). */}
       {/* TODO: Contenu prévu : logo + navigation rapide + bloc "Nous contacter". */}
 
-      <footer class="bg-dark text-light pt-5 pb-4">
-        <div class="container">
-          <div class="row">
+      <footer className="bg-dark text-light pt-5 pb-4">
+        <div className="container">
+          <div className="row">
 
             {/* 🔹 Colonne 1 : Logo et nom de l'entreprise */}
-            <div class="col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-start">
+            <div className="col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-start">
               {/* Logo de l’entreprise */}
               <img
                 src="/05-assets/Logo_factice-v1.jpg"
                 alt="Logo de l’entreprise"
                 width="120"
-                class="mb-2"
+                className="mb-2"
               />
 
               {/* Nom de l’entreprise */}
-              <h5 class="fw-semibold">Nom de l’entreprise</h5>
+              <h5 className="fw-semibold">Nom de l’entreprise</h5>
             </div>
 
             {/* 🔹 Colonne 2 : Navigation rapide */}
-            <div class="col-md-4 mb-4 mb-md-0">
-              <h6 class="text-uppercase fw-bold mb-3">Navigation</h6>
-              <ul class="list-unstyled">
+            <div className="col-md-4 mb-4 mb-md-0">
+              <h6 className="text-uppercase fw-bold mb-3">Navigation</h6>
+              <ul className="list-unstyled">
 
                 {/* C'est ici que je .map mon fichier header.js */}
                 {HEADER_LINK.map((Link) => (
@@ -54,11 +54,11 @@ const Footer = () => {
             </div>
 
             {/* 🔹 Colonne 3 : Informations de contact */}
-            <div class="col-md-4">
-              <h6 class="text-uppercase fw-bold mb-3">Nous contacter</h6>
+            <div className="col-md-4">
+              <h6 className="text-uppercase fw-bold mb-3">Nous contacter</h6>
 
               {/* Adresse complète */}
-              <address class="mb-2">
+              <address className="mb-2">
                 123 Rue de l’Entreprise<br />
                 75000 Paris<br />
                 France<br />
@@ -67,15 +67,15 @@ const Footer = () => {
               </address>
 
               {/* Icônes réseaux sociaux */}
-              <div class="mt-2">
-                <a href="#" class="text-light me-3" title="Facebook">
-                  <i class="bi bi-facebook fs-5"></i>
+              <div className="mt-2">
+                <a href="#" className="text-light me-3" title="Facebook">
+                  <i className="bi bi-facebook fs-5"></i>
                 </a>
-                <a href="#" class="text-light me-3" title="Instagram">
-                  <i class="bi bi-instagram fs-5"></i>
+                <a href="#" className="text-light me-3" title="Instagram">
+                  <i className="bi bi-instagram fs-5"></i>
                 </a>
-                <a href="#" class="text-light" title="LinkedIn">
-                  <i class="bi bi-linkedin fs-5"></i>
+                <a href="#" className="text-light" title="LinkedIn">
+                  <i className="bi bi-linkedin fs-5"></i>
                 </a>
               </div>
             </div>
