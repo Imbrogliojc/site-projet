@@ -49,7 +49,13 @@ export const updateDevis = async (req, res) => {
         if(!devis) return res.status(404).json("Devis not found !")
         const updatedDevis = await Devis.findByIdAndUpdate(
             req.params.id,
-            { $set: req.body },
+            { $set: {
+                prixTtc: req.body.prixTtc,
+                dateIt: req.body.dateIt,
+                heureIt: req.body.heureIt,
+                status: req.body.status
+            },
+        },
             { new: true }
         )
         res.status(200).json(updatedDevis);

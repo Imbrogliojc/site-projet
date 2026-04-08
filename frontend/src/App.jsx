@@ -6,6 +6,8 @@ import TemplateAdmin from "./components/Template/TemplateAdmin.jsx"
 
 // IMPORT DES SERVICES
 import AdminServices from "./pages/Admin/Services/AdminServices.jsx"
+import AdminDevis from "./pages/Admin/Devis/AdminDevis.jsx"
+import AdminReservations from './pages/Admin/Reservations/AdminReservations.jsx'
 
 // IMPORT DES PAGES ADMINISTRATEUR
 import Dashboard from "./pages/Admin/Dashboard.jsx"
@@ -23,6 +25,7 @@ import Login from './pages/Auth/Login'
 
 // IMPORT DES PAGES PRIVEES
 import PrivateRoute from './utils/helpers/PrivateRoute.jsx'
+import PrivateRouteAdmin from "./utils/helpers/PrivateRouteAdmin.jsx"
 
 function App() {
 
@@ -47,14 +50,18 @@ function App() {
           <Route path='profil' element={<Profil />} />
         </Route>
 
-      {/* ROUTES ADMINISTRATEURS */}
-        <Route path="admin" element={<TemplateAdmin />}>
-          <Route index element={<Dashboard />} />
-          <Route path="services" element={<AdminServices />} />
-        </Route>
-
-
       </Route>
+
+        {/* ROUTES ADMINISTRATEURS */}
+        <Route element={<PrivateRouteAdmin />} >
+          <Route path="admin" element={<TemplateAdmin />}>
+            <Route index element={<Dashboard />} />
+            <Route path="services" element={<AdminServices />} />
+            <Route path="devis" element={<AdminDevis />} />
+            <Route path="reservations" element={<AdminReservations />} />
+          </Route>
+        </Route>
+        
     </Routes>
   )
 }

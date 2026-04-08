@@ -75,21 +75,23 @@ const AdminServices = () => {
     }
 
     return (
-        <div>
-            <h1>Gestion des services</h1>
+        <div className="container-fluid p-4">
+            <h2 className="mb-4">Gestion des services</h2>
 
-            <form onSubmit={handleCreate}>
+            <form className="d-flex gap-2 mb-4" onSubmit={handleCreate}>
                 <input
                     type="text"
                     placeholder="Nom du service"
                     value={newService}
                     onChange={handleChange}
                 />
-                <button type="submit">Ajouter</button>
+                <button className="btn btn-primary" type="submit">
+                    <i className="bi bi-pencil-square"></i>Ajouter
+                </button>
             </form>
 
-            <table border="1" cellPadding="10">
-                <thead>
+            <table className="table table-striped table-hover align-middle">
+                <thead className="table-dark">
                     <tr>
                         <th>ID</th>
                         <th>Nom du service</th>
@@ -106,6 +108,7 @@ const AdminServices = () => {
                             <td>
                                 {editId === service._id ? (
                                     <input
+                                        className="form-control form-control-sm"
                                         value={editValue}
                                         onChange={(e) => setEditValue(e.target.value)}
                                     />
@@ -114,19 +117,28 @@ const AdminServices = () => {
                                 )}
                             </td>
 
-                            <td>
+                            <td className="d-flex gap-2">
                                 {editId === service._id ? (
-                                    <button onClick={() => handleUpdate(service._id)}>
-                                        Valider
+                                    <button
+                                        className="btn btn-success btn-sm"
+                                        onClick={() => handleUpdate(service._id)}
+                                    >
+                                        <i className="bi bi-check"></i>
                                     </button>
                                 ) : (
                                     <>
-                                        <button onClick={() => handleEdit(service)}>
-                                            Modifier
+                                        <button
+                                            className="btn btn-primary btn-sm"
+                                            onClick={() => handleEdit(service)}
+                                        >
+                                            <i className="bi bi-pencil-square"></i>Modifier
                                         </button>
 
-                                        <button onClick={() => handleDelete(service._id)}>
-                                            Supprimer
+                                        <button
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => handleDelete(service._id)}
+                                        >
+                                            <i className="bi bi-trash"></i>Supprimer
                                         </button>
                                     </>
                                 )}

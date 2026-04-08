@@ -6,7 +6,10 @@ const reservationSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "devis",
             required: true
-        }
+        },
+        note: {
+            type: String
+        },
     },
     { timestamps: true }
 );

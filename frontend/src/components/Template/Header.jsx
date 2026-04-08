@@ -90,6 +90,14 @@ const Header = () => {
                                         </NavLink>
                                     </li>
 
+                                    {currentUser?.role === "admin" && (
+                                        <li className="nav-item">
+                                            <NavLink to="/admin" className="nav-link">
+                                                Admin
+                                            </NavLink>
+                                        </li>
+                                    )}
+                                    
                                     <li className="nav-item">
                                         <button type="button" onClick={logout} className="nav-link nav-link-custom">
                                             Déconnexion

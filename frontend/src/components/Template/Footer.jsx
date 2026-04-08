@@ -14,7 +14,7 @@ const Footer = () => {
       {/* TODO: Contenu prévu : logo + navigation rapide + bloc "Nous contacter". */}
 
       <footer className="bg-dark text-light pt-5 pb-4">
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
 
             {/* 🔹 Colonne 1 : Logo et nom de l'entreprise */}

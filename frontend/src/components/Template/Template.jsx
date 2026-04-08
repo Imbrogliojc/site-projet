@@ -12,7 +12,7 @@ const Template = () => {
     <>
     <Header />
 
-    <main>
+    <main className="container py-4">
         <Outlet />
     </main>
     

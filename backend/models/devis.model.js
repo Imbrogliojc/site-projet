@@ -35,6 +35,11 @@ const devisSchema = mongoose.Schema(
         },
         prixTtc: {
             type: Number
+        },
+        status: {
+            type: String,
+            enum: ["pending", "validated"],
+            default: "pending"
         }
     },
     { timestamps: true }

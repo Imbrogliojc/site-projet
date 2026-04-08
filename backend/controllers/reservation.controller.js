@@ -2,12 +2,21 @@ import Reservation from "../models/reservation.model.js"
 
 export const createReservation = async (req, res) => {
     try {
-        const newReservation = new Reservation({
-            ...req.body
+        const existing = await Reservation.findOne({ devis: req.body.devis });
+        if (existing) {
+            return res.status(400).json("Reservation already exists !")
+        }
+        const reservation = await Reservation.create({
+            devis: req.body.devis
+        })
+        const reservationCreated = await Reservation.findById(reservation._id).populate({
+            path: "devis",
+            populate: [
+                { path: "member", select: "-password" },
+                { path: "service" }
+            ]
         });
-
-        const savedReservation = await newReservation.save();
-        res.status(201).json(savedReservation);
+        res.status(201).json(reservationCreated);
 
     } catch (error) {
         console.log(error)
