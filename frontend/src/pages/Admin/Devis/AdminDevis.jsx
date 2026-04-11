@@ -20,7 +20,7 @@ const AdminDevis = () => {
 
     const fetchDevis = async () => {
         try {
-            const response = await axios.get(URL.DEVIS)
+            const response = await axios.get(URL.DEVIS, { withCredentials: true })
             setDevis(response.data)
         } catch (error) {
             console.log(error)
@@ -205,10 +205,11 @@ const AdminDevis = () => {
                                     ) : (
                                         <>
                                             <button
-                                                className="btn btn-primary btn-sm"
+                                                className={`btn btn-sm ${d.status === "validated" ? "btn-outline-success" : "btn-warning"}`}
                                                 onClick={() => handleEdit(d)}
                                             >
-                                                <i className="bi bi-pencil-square"></i>Répondre
+                                                <i className="bi bi-pencil-square"></i>{" "}
+                                                {d.status === "validated" ? "Modifier réponse" : "Traiter devis"}
                                             </button>
 
                                             {d.status === "validated" && (
@@ -216,7 +217,8 @@ const AdminDevis = () => {
                                                     className="btn btn-success btn-sm"
                                                     onClick={() => handleCreateReservation(d._id)}
                                                 >
-                                                    <i className="bi bi-check"></i>Créer réservation
+                                                    <i className="bi bi-calendar-check"></i>{" "}
+                                                    Créer réservation
                                                 </button>
                                             )}
                                         </>

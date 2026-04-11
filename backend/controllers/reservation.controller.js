@@ -42,6 +42,29 @@ export const getReservations = async (req, res) => {
     }
 };
 
+// FONCTION getMyReservation DEPUIS USER PROFILE
+
+export const getMyReservation = async (req, res) => {
+    try {
+        const reservations = await Reservation.find()
+            .populate({
+                path: "devis",
+                match: { member: req.user.id },
+                populate: [
+                    { path: "member", select: "-password" },
+                    { path: "service" }
+                ]
+            })
+        // FILTRE : RESERVATION NE CONNAIT PAS MEMBER
+        const filteredReservations = reservations.filter(res => res.devis !== null)
+        res.status(200).json(filteredReservations)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+};
+
 export const getReservationById = async (req, res) => {
     try {
         const reservation = await Reservation.findById(req.params.id)

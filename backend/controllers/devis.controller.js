@@ -29,12 +29,26 @@ export const getDevis = async (req, res) => {
     }
 };
 
+// FONCTION getMyDevis DEPUIS USER PROFILE
+
+export const getMyDevis = async (req, res) => {
+    try {
+        const devis = await Devis.find({ member: req.user.id })
+            .populate("service")
+        res.status(200).json(devis)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+};
+
 export const getDevisById = async (req, res) => {
     try {
         const devis = await Devis.findById(req.params.id)
             .populate("member", "password")
             .populate("service")
-        if(!devis) return res.status(404).json("Devis not found !")
+        if (!devis) return res.status(404).json("Devis not found !")
         res.status(200).json(devis);
 
     } catch (error) {
@@ -46,16 +60,17 @@ export const getDevisById = async (req, res) => {
 export const updateDevis = async (req, res) => {
     try {
         const devis = await Devis.findById(req.params.id)
-        if(!devis) return res.status(404).json("Devis not found !")
+        if (!devis) return res.status(404).json("Devis not found !")
         const updatedDevis = await Devis.findByIdAndUpdate(
             req.params.id,
-            { $set: {
-                prixTtc: req.body.prixTtc,
-                dateIt: req.body.dateIt,
-                heureIt: req.body.heureIt,
-                status: req.body.status
+            {
+                $set: {
+                    prixTtc: req.body.prixTtc,
+                    dateIt: req.body.dateIt,
+                    heureIt: req.body.heureIt,
+                    status: req.body.status
+                },
             },
-        },
             { new: true }
         )
         res.status(200).json(updatedDevis);
@@ -70,7 +85,7 @@ export const deleteDevis = async (req, res) => {
     try {
 
         const devis = await Devis.findById(req.params.id)
-        if(!devis) return res.status(404).json("Devis not found !")
+        if (!devis) return res.status(404).json("Devis not found !")
         await Devis.findByIdAndDelete(req.params.id)
         res.status(200).json("Devis deleted !")
 

@@ -44,40 +44,77 @@ const Profil = () => {
   }, [])
 
   return (
-    <div>
-      <h1>Mon profil</h1>
+    <table border="1" cellPadding="10">
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Véhicule</th>
+          <th>Prix</th>
+          <th>Statut</th>
+          <th>Réservation</th>
+        </tr>
+      </thead>
 
-      <h2>Mes devis</h2>
+      <tbody>
+        {myDevis?.map((devis) => {
 
-      {myDevis.length === 0 ? (
-        <p>Aucun devis</p>
-      ) : (
-        myDevis.map((d) => (
-          <div key={d._id}>
-            <p>Service : {d.service?.serviceName}</p>
-            <p>Véhicule : {d.marqueVehicule} {d.modeleVehicule}</p>
-            <p>Prix : {d.prixTtc} €</p>
-            <hr />
-          </div>
-        ))
-      )}
+          const reservation = myReservation.find(
+            (r) => r.devis?._id === devis._id
+          );
 
-      <h2>Mes réservations</h2>
+          // 🔥 LOGIQUE STATUT MÉTIER
+          let statusLabel = "En attente";
+          let statusClass = "badge bg-warning text-dark";
 
-      {myReservation.length === 0 ? (
-        <p>Aucune réservation</p>
-      ) : (
-        myReservation.map((r) => (
-          <div key={r._id}>
-            <p>Date : {r.devis?.dateIt}</p>
-            <p>Heure : {r.devis?.heureIt}</p>
-            <hr />
-          </div>
-        ))
-      )}
+          if (reservation) {
+            statusLabel = "Réservé";
+            statusClass = "badge bg-primary";
+          } else if (devis.status === "validated") {
+            statusLabel = "Validé";
+            statusClass = "badge bg-success";
+          }
 
-    </div>
-  )
-}
+          return (
+            <tr key={devis._id}>
+
+              <td>{devis.service?.serviceName}</td>
+
+              <td>
+                {devis.marqueVehicule} {devis.modeleVehicule}
+              </td>
+
+              <td>
+                {devis.prixTtc ? `${devis.prixTtc} €` : "—"}
+              </td>
+
+              <td>
+                <span className={statusClass}>
+                  {statusLabel}
+                </span>
+              </td>
+
+              <td>
+                {reservation ? (
+                  <>
+                    <strong>Date :</strong>{" "}
+                    {reservation.devis?.dateIt
+                      ? new Date(reservation.devis.dateIt).toLocaleDateString()
+                      : "—"}
+                    <br />
+                    <strong>Heure :</strong>{" "}
+                    {reservation.devis?.heureIt || "—"}
+                  </>
+                ) : (
+                  "Aucune"
+                )}
+              </td>
+
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+};
 
 export default Profil
