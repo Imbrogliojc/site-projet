@@ -14,7 +14,8 @@ const Devis = () => {
     typeClient: "",
     marqueVehicule: "",
     modeleVehicule: "",
-    service: ""
+    service: "",
+    img: []
   })
 
   useEffect(() => {
@@ -32,8 +33,12 @@ const Devis = () => {
   }, [])
 
   const handleChange = (event) => {
-    const { name, value } = event.target
-    setDevis(prev => ({ ...prev, [name]: value }))
+    const { name, value, files } = event.target
+    if (name === "img") {
+      setDevis((prev) => ({ ...prev, img: Array.from(files) }))
+    } else {
+      setDevis(prev => ({ ...prev, [name]: value }))
+    }
   }
 
   const handleSubmit = async (event) => {
@@ -42,11 +47,31 @@ const Devis = () => {
       navigate('/login')
       return
     }
+
+    // CREATION : objet FormData pour envoyer des données multipart/form-data. Permet l'envoi de fichiers et de données textuelles
+    const formData = new FormData()
+
+    // CHAMPS : ajout champs formulaire dans FormData
+    formData.append("typeClient", devis.typeClient)
+    formData.append("marqueVehicule", devis.marqueVehicule)
+    formData.append("modeleVehicule", devis.modeleVehicule)
+    formData.append("service", devis.service)
+
+    // IMAGES : parcours du tableau d'images et ajout de chaque image dans FormData. Le nom "img" doit correspondre au champs
+    devis.img.forEach((file) => {
+      formData.append("img", file)
+    })
+
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/devis/create",
-        devis,
-        { withCredentials: true }
+        URL.DEVIS + "/create",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
       )
       console.log("Devis créé :", response.data)
 
@@ -98,6 +123,16 @@ const Devis = () => {
               </option>
             ))}
           </select>
+        </div>
+
+        <div>
+          <label>Photos du véhicule</label>
+          <input
+            type="file"
+            name="img"
+            multiple
+            onChange={handleChange}
+          />
         </div>
 
         <button type="submit">

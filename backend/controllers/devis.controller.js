@@ -2,8 +2,18 @@ import Devis from "../models/devis.model.js";
 
 export const createDevis = async (req, res) => {
     try {
+        // RECUPERATION des fichiers images depuis la requête
+        const images = req.files || [];
+
+        console.log("FILES :", images)
+        console.log("BODY :", req.body)
+
+        // EXTRACTION des chemins des images uploadées dans un tableau
+        const imagePaths = images.map(file => `/uploads/${file.filename}`);
+
         const newDevis = new Devis({
             ...req.body,
+            pieceJointe: imagePaths,
             member: req.user.id
         });
 

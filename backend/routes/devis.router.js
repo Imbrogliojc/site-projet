@@ -3,9 +3,15 @@ import { verifieToken } from '../middelwares/auth.js';
 
 import { createDevis, getDevis, getDevisById, updateDevis, deleteDevis, getMyDevis } from "../controllers/devis.controller.js";
 
+// Import du fichier multer.cjs
+import upload from '../services/multer.cjs';
+
+
 const router = express.Router();
 
-router.post('/create', verifieToken, createDevis)
+// ROUTE permettant l'upload des images
+router.post('/create', verifieToken, upload.array('img', 5), createDevis)
+
 router.get('/', getDevis)
 
 // ROUTE getMyDevis DEPUIS USER PROFILE

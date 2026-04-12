@@ -25,7 +25,8 @@ const devisSchema = mongoose.Schema(
             required: true
         },
         pieceJointe: {
-            type: String
+            type: [String],
+            default: []
         },
         dateIt: {
             type: Date

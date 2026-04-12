@@ -11,11 +11,19 @@ import addressRoutes from './routes/address.router.js'
 import devisRoutes from './routes/devis.router.js'
 import reservationRoutes from './routes/reservation.router.js'
 
+// MODULE POUR CONVERTIR LES URL EN CHEMINS DE FICHIERS
+import path from "path";
+import { fileURLToPath } from "url";
+
 // APP EXPRESS
 const app = express();
 
 // PORT
 const PORT = env.PORT || 8080;
+
+// MULTER
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // DATABASE MONGOOSE
 mongoose
@@ -30,6 +38,8 @@ app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
 }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.urlencoded({ extended: true }));
 
 // PREFIX ROUTES
 app.use('/api/user', userRoutes)

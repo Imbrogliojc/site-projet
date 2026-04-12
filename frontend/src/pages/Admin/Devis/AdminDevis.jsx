@@ -104,6 +104,7 @@ const AdminDevis = () => {
                         <th>Réponse</th>
                         <th>Actions</th>
                         <th>Status</th>
+                        <th>Photos</th>
                     </tr>
                 </thead>
 
@@ -119,6 +120,22 @@ const AdminDevis = () => {
 
                             <td>
                                 {d.marqueVehicule} {d.modeleVehicule}
+                            </td>
+
+                            <td>
+                                {d.pieceJointe && d.pieceJointe.length > 0 ? (
+                                    d.pieceJointe.map((img, index) => (
+                                        <img
+                                            key={index}
+                                            src={`http://localhost:8000${img}`}
+                                            alt="devis"
+                                            width="80"
+                                            style={{ marginRight: "5px" }}
+                                        />
+                                    ))
+                                ) : (
+                                    <span>—</span>
+                                )}
                             </td>
 
                             {/* ========================= */}
