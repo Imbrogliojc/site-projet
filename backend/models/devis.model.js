@@ -39,7 +39,7 @@ const devisSchema = mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ["pending", "validated"],
+            enum: ["pending", "validated", "archived"],
             default: "pending"
         }
     },

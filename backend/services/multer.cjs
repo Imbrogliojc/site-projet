@@ -11,7 +11,7 @@ const path = require('path')
 const uploadFolder = path.join(__dirname, '../uploads');
 
 // Vérifier si le dossier uploads existe, sinon on le créer
-if(!fs.existsSync(uploadFolder)) {
+if (!fs.existsSync(uploadFolder)) {
     fs.mkdirSync(uploadFolder);
     console.log('Dossier "upload" créé');
 }
@@ -23,7 +23,8 @@ const storage = multer.diskStorage({
     },
     // Définir le nom des fichiers uploadés
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        const uniqueSuffix = "-" + Date.now() + Math.round(Math.random() * 1e9)
+        cb(null, file.fieldname + uniqueSuffix + path.extname(file.originalname));
     }
 });
 

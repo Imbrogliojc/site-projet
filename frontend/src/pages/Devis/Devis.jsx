@@ -133,6 +133,19 @@ const Devis = () => {
             multiple
             onChange={handleChange}
           />
+
+          {devis.img.length > 0 && (
+            <div style={{ display: "flex", gap: "10px", marginTop:"10px" }} >
+              {devis.img.map((file, index) => (
+                <img
+                  key={index}
+                  src={window.URL.createObjectURL(file)}
+                  alt="preview"
+                  width="100"
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <button type="submit">

@@ -62,7 +62,7 @@ const Profil = () => {
             (r) => r.devis?._id === devis._id
           );
 
-          // 🔥 LOGIQUE STATUT MÉTIER
+          // LOGIQUE STATUT MÉTIER
           let statusLabel = "En attente";
           let statusClass = "badge bg-warning text-dark";
 

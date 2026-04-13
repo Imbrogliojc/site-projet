@@ -88,10 +88,41 @@ const AdminDevis = () => {
         }
     }
 
+    const handleArchive = async (id) => {
+        try {
+            await axios.put(`${URL.DEVIS}/archive/${id}`,
+                {},
+                // { status: "archived" },
+                { withCredentials: true }
+            )
+            fetchDevis()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm("Supprimer ce devis ?")
+        if (!confirmDelete) return
+        try {
+            await axios.delete(`${URL.DEVIS}/delete/${id}`, {
+                withCredentials: true
+            })
+            fetchDevis()
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const devisEnCours = devis.filter(d => d.status !== "archived")
+    const devisArchives = devis.filter(d => d.status === "archived")
+
     return (
         <div className="container-fluid p-4">
 
             <h2 className="mb-4">Gestion des devis</h2>
+            <h3>Devis en cours</h3>
 
             <table className="table table-striped table-hover align-middle">
 
@@ -101,46 +132,54 @@ const AdminDevis = () => {
                         <th>Client</th>
                         <th>Service</th>
                         <th>Véhicule</th>
+                        <th>Photos</th>
                         <th>Réponse</th>
                         <th>Actions</th>
                         <th>Status</th>
-                        <th>Photos</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {devis.map((d) => (
+                    {devisEnCours.map((d) => (
                         <tr key={d._id}>
 
+                            {/* 🔹 ID */}
                             <td className="text-muted small">{d._id}</td>
 
+                            {/* 🔹 CLIENT */}
                             <td>{d.member?.userName}</td>
 
+                            {/* 🔹 SERVICE */}
                             <td>{d.service?.serviceName || "—"}</td>
 
+                            {/* 🔹 VEHICULE */}
                             <td>
                                 {d.marqueVehicule} {d.modeleVehicule}
                             </td>
 
+                            {/* 🔹 PHOTOS */}
                             <td>
                                 {d.pieceJointe && d.pieceJointe.length > 0 ? (
-                                    d.pieceJointe.map((img, index) => (
-                                        <img
-                                            key={index}
-                                            src={`http://localhost:8000${img}`}
-                                            alt="devis"
-                                            width="80"
-                                            style={{ marginRight: "5px" }}
-                                        />
-                                    ))
+                                    <div className="d-flex flex-wrap gap-1">
+                                        {d.pieceJointe.map((img, index) => (
+                                            <img
+                                                key={index}
+                                                src={`http://localhost:8000${img}`}
+                                                alt="devis"
+                                                width="70"
+                                                style={{ cursor: "pointer" }}
+                                                onClick={() =>
+                                                    window.open(`http://localhost:8000${img}`, "_blank")
+                                                }
+                                            />
+                                        ))}
+                                    </div>
                                 ) : (
-                                    <span>—</span>
+                                    "—"
                                 )}
                             </td>
 
-                            {/* ========================= */}
-                            {/* REPONSE */}
-                            {/* ========================= */}
+                            {/* 🔹 REPONSE */}
                             <td>
                                 {editId === d._id ? (
                                     <div className="d-flex flex-column gap-2">
@@ -189,10 +228,7 @@ const AdminDevis = () => {
                                     </div>
                                 ) : (
                                     <div className="d-flex flex-column">
-
-                                        <span>
-                                            {d.prixTtc ? `${d.prixTtc} €` : "—"}
-                                        </span>
+                                        <span>{d.prixTtc ? `${d.prixTtc} €` : "—"}</span>
 
                                         <span className="text-muted small">
                                             <i className="bi bi-calendar-date"></i> {d.dateIt || "—"}
@@ -201,14 +237,11 @@ const AdminDevis = () => {
                                         <span className="text-muted small">
                                             <i className="bi bi-clock"></i> {d.heureIt || "—"}
                                         </span>
-
                                     </div>
                                 )}
                             </td>
 
-                            {/* ========================= */}
-                            {/* ACTIONS */}
-                            {/* ========================= */}
+                            {/* 🔹 ACTIONS */}
                             <td>
                                 <div className="d-flex justify-content-center align-items-center gap-2">
 
@@ -217,16 +250,19 @@ const AdminDevis = () => {
                                             className="btn btn-success btn-sm"
                                             onClick={() => handleUpdate(d._id)}
                                         >
-                                            <i className="bi bi-check"></i>
+                                            <i className="bi bi-check"></i> Valider
                                         </button>
                                     ) : (
                                         <>
                                             <button
-                                                className={`btn btn-sm ${d.status === "validated" ? "btn-outline-success" : "btn-warning"}`}
+                                                className={`btn btn-sm ${d.status === "validated"
+                                                    ? "btn-primary"
+                                                    : "btn-warning"
+                                                    }`}
                                                 onClick={() => handleEdit(d)}
                                             >
                                                 <i className="bi bi-pencil-square"></i>{" "}
-                                                {d.status === "validated" ? "Modifier réponse" : "Traiter devis"}
+                                                {d.status === "validated" ? "Modifier" : "Traiter"}
                                             </button>
 
                                             {d.status === "validated" && (
@@ -234,25 +270,176 @@ const AdminDevis = () => {
                                                     className="btn btn-success btn-sm"
                                                     onClick={() => handleCreateReservation(d._id)}
                                                 >
-                                                    <i className="bi bi-calendar-check"></i>{" "}
-                                                    Créer réservation
+                                                    <i className="bi bi-calendar-check"></i> Réservation
                                                 </button>
                                             )}
+
+                                            {d.status === "validated" && (
+                                                <button
+                                                    className="btn btn-secondary btn-sm"
+                                                    onClick={() => handleArchive(d._id)}
+                                                >
+                                                    <i className="bi -bi-archive"></i>Archiver
+                                                </button>
+                                            )}
+
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => handleDelete(d._id)}
+                                            >
+                                                <i className="bi bi-trash"></i> Supprimer
+                                            </button>
                                         </>
                                     )}
 
                                 </div>
                             </td>
 
-                            {/* ========================= */}
-                            {/* STATUS */}
-                            {/* ========================= */}
+                            {/* 🔹 STATUS */}
                             <td>
                                 {d.status === "validated" ? (
                                     <span className="badge bg-success">Validé</span>
                                 ) : (
                                     <span className="badge bg-warning text-dark">En attente</span>
                                 )}
+                            </td>
+
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <h3>Devis archivés</h3>
+            <table className="table table-striped table-hover align-middle">
+
+                <thead className="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Client</th>
+                        <th>Service</th>
+                        <th>Véhicule</th>
+                        <th>Photos</th>
+                        <th>Réponse</th>
+                        <th>Actions</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {devisArchives.map((d) => (
+                        <tr key={d._id}>
+
+                            {/* 🔹 ID */}
+                            <td className="text-muted small">{d._id}</td>
+
+                            {/* 🔹 CLIENT */}
+                            <td>{d.member?.userName}</td>
+
+                            {/* 🔹 SERVICE */}
+                            <td>{d.service?.serviceName || "—"}</td>
+
+                            {/* 🔹 VEHICULE */}
+                            <td>
+                                {d.marqueVehicule} {d.modeleVehicule}
+                            </td>
+
+                            {/* 🔹 PHOTOS */}
+                            <td>
+                                {d.pieceJointe && d.pieceJointe.length > 0 ? (
+                                    <div className="d-flex flex-wrap gap-1">
+                                        {d.pieceJointe.map((img, index) => (
+                                            <img
+                                                key={index}
+                                                src={`http://localhost:8000${img}`}
+                                                alt="devis"
+                                                width="70"
+                                                style={{ cursor: "pointer" }}
+                                                onClick={() =>
+                                                    window.open(`http://localhost:8000${img}`, "_blank")
+                                                }
+                                            />
+                                        ))}
+                                    </div>
+                                ) : (
+                                    "—"
+                                )}
+                            </td>
+
+                            {/* 🔹 REPONSE */}
+                            <td>
+                                {editId === d._id ? (
+                                    <div className="d-flex flex-column gap-2">
+
+                                        <select
+                                            className="form-select form-select-sm"
+                                            name="service"
+                                            value={editValues.service}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="">Choisir un service</option>
+                                            {services.map((s) => (
+                                                <option key={s._id} value={s._id}>
+                                                    {s.serviceName}
+                                                </option>
+                                            ))}
+                                        </select>
+
+                                        <input
+                                            className="form-control form-control-sm"
+                                            type="number"
+                                            name="prixTtc"
+                                            placeholder="Prix"
+                                            value={editValues.prixTtc}
+                                            onChange={handleChange}
+                                        />
+
+                                        <div className="d-flex gap-2">
+                                            <input
+                                                className="form-control form-control-sm"
+                                                type="date"
+                                                name="dateIt"
+                                                value={editValues.dateIt}
+                                                onChange={handleChange}
+                                            />
+
+                                            <input
+                                                className="form-control form-control-sm"
+                                                type="time"
+                                                name="heureIt"
+                                                value={editValues.heureIt}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+
+                                    </div>
+                                ) : (
+                                    <div className="d-flex flex-column">
+                                        <span>{d.prixTtc ? `${d.prixTtc} €` : "—"}</span>
+
+                                        <span className="text-muted small">
+                                            <i className="bi bi-calendar-date"></i> {d.dateIt || "—"}
+                                        </span>
+
+                                        <span className="text-muted small">
+                                            <i className="bi bi-clock"></i> {d.heureIt || "—"}
+                                        </span>
+                                    </div>
+                                )}
+                            </td>
+
+                            {/* 🔹 ACTIONS */}
+                            <td>
+                                <div className="d-flex justify-content-center align-items-center gap-2">
+                                    <button
+                                        className="btn btn-danger btn-sm"
+                                        onClick={() => handleDelete(d._id)}
+                                    >
+                                        <i className="bi bi-trash"></i> Supprimer
+                                    </button>
+                                </div>
+                            </td>
+
+                            {/* 🔹 STATUS */}
+                            <td>
+                                <span className="badge bg-secondary">Archivé</span>
                             </td>
 
                         </tr>

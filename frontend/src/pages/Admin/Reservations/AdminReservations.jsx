@@ -52,15 +52,16 @@ const AdminReservations = () => {
       )
 
       // 2️⃣ update date + heure (devis)
-      await axios.put(
-        `${URL.DEVIS}/update/${reservation.devis._id}`,
-        {
-          dateIt: editValues.dateIt,
-          heureIt: editValues.heureIt
-        },
-        { withCredentials: true }
-      )
-
+      if (reservation.devis?._id) {
+        await axios.put(
+          `${URL.DEVIS}/update/${reservation.devis?._id}`,
+          {
+            dateIt: editValues.dateIt,
+            heureIt: editValues.heureIt
+          },
+          { withCredentials: true }
+        )
+      }
       setEditValues({
         note: "",
         dateIt: "",
@@ -102,25 +103,25 @@ const AdminReservations = () => {
 
               <td className="text-muted small">{reservation._id}</td>
 
-              <td>{reservation.devis.member.userName}</td>
+              <td>{reservation.devis?.member?.userName || "-"}</td>
 
-              <td>{reservation.devis.service.serviceName}</td>
+              <td>{reservation.devis?.service?.serviceName || "-"}</td>
 
               <td>
-                {reservation.devis.marqueVehicule} {reservation.devis.modeleVehicule}
+                {reservation.devis?.marqueVehicule || "-"} {reservation.devis?.modeleVehicule || "-"}
               </td>
 
               <td>
                 <i className="bi bi-calendar-date"></i>{" "}
-                {reservation.devis.dateIt || "—"}
+                {reservation.devis?.dateIt || "—"}
               </td>
 
               <td>
                 <i className="bi bi-clock"></i>{" "}
-                {reservation.devis.heureIt || "—"}
+                {reservation.devis?.heureIt || "—"}
               </td>
 
-              <td>{reservation.devis.prixTtc} €</td>
+              <td>{reservation.devis?.prixTtc ? `${reservation.devis.prixTtc}€` : "-"} </td>
 
               {/* ========================= */}
               {/* NOTE */}
