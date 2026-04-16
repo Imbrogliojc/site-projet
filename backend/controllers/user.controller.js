@@ -1,12 +1,141 @@
+// ====================
+// CONTROLLER USER
+// ====================
+
+// Gestion complète de l'utilisateur :
+// inscription -> vérification email -> connexion -> reset password -> CRUD admin
+
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { env } from '../config/index.js';
 
-export const signup = async (req, res) => {
+// Import spécifique vérification Email & Reset Password
+import crypto from "crypto";
+import { sendMail } from '../services/mailer.js';
+
+// ====================
+// VERIFY EMAIL
+// ====================
+
+// Vérifie le token reçu par email
+// Active le compte utilisateur
+
+export const verifyEmail = async (req, res) => {
     try {
+        const user = await User.findOne({ verificationToken: req.query.token })
+        if (!user) {
+            return res.status(400).json("Token invalide !")
+        }
+        user.isVerified = true;
+        user.verificationToken = null;
+        await user.save();
+        res.status(200).json("Email vérifié !")
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error.message)
+    }
+};
+
+// ====================
+// FORGOT PASSWORD
+// ====================
+
+// On génère un token temporaire pour reset password
+// Envoi d'un email avec lien contenant ce token
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email })
+        if (!user) return res.status(404).json("User not found !")
+
+        // Génération du Token
+        const resetToken = crypto.randomBytes(32).toString("hex");
+
+        // Stockage du Token + expiration sous 1 heure
+        user.resetToken = resetToken;
+        user.resetTokenExpire = Date.now() + 3600000;
+        await user.save();
+
+        // Lien du reset envoyé au frontend
+        const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+
+        // Envoi Email
+        await sendMail(
+            user.email,
+            "Reset password !",
+            ` <p> Cliquez ici pour réinitialiser votre mot de passe : ${resetUrl} </p> `
+        )
+
+        res.status(200).json("Email sent !")
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+};
+
+// ====================
+// RESET PASSWORD
+// ====================
+
+// Vérifie le token + expiration
+// Mise à jour du mot de passe (nouveau hash bcrypt)
+// Supprime le token après utilisation
+
+export const resetPassword = async (req, res) => {
+    try {
+        const user = await User.findOne({
+            resetToken: req.params.token,
+            resetTokenExpire: { $gt: Date.now() }
+        })
+
+        if (!user) return res.status(400).json("Token invalide ou expiré !")
+
+        // Nouveau password hashed avec bcrypt
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        await User.create({ ...req.body, password: hashedPassword });
+
+        user.password = hashedPassword;
+        user.resetToken = null;
+        user.resetTokenExpire = null;
+
+        await user.save();
+
+        res.status(200).json("Password reset successful !")
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json((error.message))
+    }
+}
+
+// ====================
+// SIGNUP (REGISTER)
+// ====================
+
+// Création d'un utilisateur
+// Génération d'un token de vérification email
+// Envoi d'un email de confirmation
+
+export const signup = async (req, res) => {
+    // Génération d’un token unique pour la vérification email
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+
+    try {
+        // Hash password + création de l'utilisateur avec le token de vérification
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        await User.create({ ...req.body, password: hashedPassword, verificationToken });
+
+        // Envoi email de vérification
+        await sendMail(
+            req.body.email,
+            "Vérification email",
+            `<a href="http://localhost:5173/verify?token=${verificationToken}">
+              Vérifier mon email
+            </a>`
+        )
+
         res.status(201).json('User has been created !')
 
     } catch (error) {
@@ -15,17 +144,37 @@ export const signup = async (req, res) => {
     }
 };
 
+// ====================
+// SIGN (LOGIN)
+// ====================
+
+// Authentification de l'utilisateur
+// Vérification de l'email obligatoire
+// Génération JWT + cookie HTTPOnly
+
 export const sign = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email })
         if (!user) return res.status(404).json('User not found !')
+
+        // Bloquer connexion si email non vérifié
+        if (!user.isVerified) {
+            return res.status(403).json("Veuillez vérifier votre email !")
+        }
+
+        // Vérification du password
         const comparePassword = await bcrypt.compare(req.body.password, user.password)
         if (!comparePassword) return res.status(400).json('Wrong Credentials !')
+
+        // Génération JWT
         const token = jwt.sign(
             { id: user._id },
             env.TOKEN,
             { expiresIn: '24h' })
+
         const { password, ...others } = user._doc
+
+        // Envoi du cookie sécurisé
         res.cookie('access_token', token, {
             httpOnly: true,
             secure: false,
@@ -34,12 +183,18 @@ export const sign = async (req, res) => {
         })
             .status(200)
             .json(others)
-            
+
     } catch (error) {
         console.log(error)
         res.status(500).json(error.message)
     }
 };
+
+// ====================
+// GET ALL USERS (ADMIN)
+// ====================
+
+// Récupération de tous les utilisateurs
 
 export const getUsers = async (req, res) => {
     try {
@@ -51,6 +206,12 @@ export const getUsers = async (req, res) => {
         res.status(500).json(error.message)
     }
 };
+
+// ====================
+// GET USERS BY ID
+// ====================
+
+// Récupération d'un utilisateur spécifique via son ID
 
 export const getUserById = async (req, res) => {
     try {
@@ -64,18 +225,11 @@ export const getUserById = async (req, res) => {
     }
 };
 
-export const deleteUser = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id)
-        if (!user) return res.status(404).json('User not found !')
-        await User.findByIdAndDelete(req.params.id)
-        res.status(200).json(`The User with th id ${req.params.id} has been deleted.`)
+// ====================
+// UPDATE USER
+// ====================
 
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
-    }
-};
+// Mise à jour d'un utilisateur (admin ou user)
 
 export const updateUser = async (req, res) => {
     try {
@@ -96,3 +250,42 @@ export const updateUser = async (req, res) => {
         res.status(500).json(error.message)
     }
 };
+
+// ====================
+// DELETE USER
+// ====================
+
+// Suppression d'un utilisateur
+
+export const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        if (!user) return res.status(404).json('User not found !')
+        await User.findByIdAndDelete(req.params.id)
+        res.status(200).json(`The User with th id ${req.params.id} has been deleted.`)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+};
+
+// ====================
+// NOTES PROJET
+// ====================
+
+/* 
+Cycle utilisateur :
+signup -> verifyEmail -> login -> forgotPassword -> resetPassword
+
+Les points importants :
+- vérification de l'email obligatoire avant première connexion
+- token de réinitialisation temporaire (1 heure)
+- password toujours "hashé" avec bcrypt
+- JWT stocké en cookie HTTPOnly
+
+Sécurité :
+- le token est supprimé après utilisation
+- on contrôle le délai d'expiration du token
+- aucune donnée sensible exposée
+*/
