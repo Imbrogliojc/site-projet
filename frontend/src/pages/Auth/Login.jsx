@@ -47,6 +47,9 @@ const Login = () => {
                 <button type="submit" disabled={isLoading}>
                     {isLoading ? "Chargement en cours !" : "Login"}
                 </button>
+                <p>
+                    <a href="forgotPassword">Mot de passe oublié</a>
+                </p>
 
             </form>
             <p>Pas encore de compte ? <Link to="/register">Créer un compte</Link></p>

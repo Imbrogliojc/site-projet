@@ -22,6 +22,8 @@ import Profil from './pages/Profil/Profil'
 import Contact from './pages/Contact/Contact'
 import Register from './pages/Auth/Register'
 import Login from './pages/Auth/Login'
+import ForgotPassword from './pages/Auth/ForgotPassword.jsx'
+import ResetPassword from './pages/Auth/ResetPassword.jsx'
 
 // IMPORT DES PAGES PRIVEES
 import PrivateRoute from './utils/helpers/PrivateRoute.jsx'
@@ -45,6 +47,8 @@ function App() {
 
         <Route path='register' element={<Register />} />
         <Route path='login' element={<Login />} />
+        <Route path='forgotPassword' element={<ForgotPassword />} />
+        <Route path='reset-password/:token' element={<ResetPassword />} />
 
         <Route element={<PrivateRoute />}>
           <Route path='profil' element={<Profil />} />
@@ -52,16 +56,16 @@ function App() {
 
       </Route>
 
-        {/* ROUTES ADMINISTRATEURS */}
-        <Route element={<PrivateRouteAdmin />} >
-          <Route path="admin" element={<TemplateAdmin />}>
-            <Route index element={<Dashboard />} />
-            <Route path="services" element={<AdminServices />} />
-            <Route path="devis" element={<AdminDevis />} />
-            <Route path="reservations" element={<AdminReservations />} />
-          </Route>
+      {/* ROUTES ADMINISTRATEURS */}
+      <Route element={<PrivateRouteAdmin />} >
+        <Route path="admin" element={<TemplateAdmin />}>
+          <Route index element={<Dashboard />} />
+          <Route path="services" element={<AdminServices />} />
+          <Route path="devis" element={<AdminDevis />} />
+          <Route path="reservations" element={<AdminReservations />} />
         </Route>
-        
+      </Route>
+
     </Routes>
   )
 }

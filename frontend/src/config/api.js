@@ -6,7 +6,8 @@ const URL = {
     REGISTER: `${BASE_URL}/user/signup`,
     SERVICES: `${BASE_URL}/service`,
     DEVIS: `${BASE_URL}/devis`,
-    RESERVATIONS: `${BASE_URL}/reservation`
+    RESERVATIONS: `${BASE_URL}/reservation`,
+    USER : `${BASE_URL}/user`
 }
 
 export default URL
