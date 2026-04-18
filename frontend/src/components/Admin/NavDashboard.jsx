@@ -20,9 +20,15 @@ const NavDashboard = () => {
           </NavLink>
         </li>
 
-        <li className="nav-item">
+        <li className="nav-item mb-2">
           <NavLink to="/admin/reservations" className="nav-link text-white">
             📅 Réservations
+          </NavLink>
+        </li>
+
+        <li className="nav-item">
+          <NavLink to="/admin/adresses" className="nav-link text-white">
+            🏚️​ Adresses
           </NavLink>
         </li>
 

@@ -8,7 +8,8 @@ const URL = {
     DEVIS: `${BASE_URL}/devis`,
     RESERVATIONS: `${BASE_URL}/reservation`,
     USER : `${BASE_URL}/user`,
-    CONTACT: `${BASE_URL}/contact`
+    CONTACT: `${BASE_URL}/contact`,
+    ADDRESS: `${BASE_URL}/address`,
 }
 
 export default URL
