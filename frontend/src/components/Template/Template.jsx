@@ -9,15 +9,17 @@ import Footer from './Footer'
 // Template parent de tous nos composants
 const Template = () => {
   return (
-    <>
-    <Header />
+    <div className="d-flex flex-column min-vh-100">
 
-    <main className="container py-4">
+      <Header />
+
+      <main className="flex-grow-1 container py-4">
         <Outlet />
-    </main>
-    
-    <Footer />
-    </>
+      </main>
+
+      <Footer />
+
+    </div>
   )
 }
 

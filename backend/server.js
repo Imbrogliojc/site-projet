@@ -10,6 +10,7 @@ import serviceRoutes from './routes/service.router.js'
 import addressRoutes from './routes/address.router.js'
 import devisRoutes from './routes/devis.router.js'
 import reservationRoutes from './routes/reservation.router.js'
+import contactRoutes from './routes/contact.router.js'
 
 // MODULE POUR CONVERTIR LES URL EN CHEMINS DE FICHIERS
 import path from "path";
@@ -47,6 +48,7 @@ app.use('/api/service', serviceRoutes)
 app.use('/api/address', addressRoutes)
 app.use('/api/devis', devisRoutes)
 app.use('/api/reservation', reservationRoutes)
+app.use('/api/contact', contactRoutes)
 
 // SERVER
 app.listen(PORT, () => {
