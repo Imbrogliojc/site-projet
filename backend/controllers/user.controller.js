@@ -215,12 +215,61 @@ export const getUsers = async (req, res) => {
 
 export const getUserById = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id)
+        const user = await User.findById(req.params.id).select("-password")
         if (!user) return res.status(404).json("User not found !")
         res.status(200).json(user);
 
     } catch (error) {
         console.log(error);
+        res.status(500).json(error.message)
+    }
+};
+
+// ====================
+// GET MY USER
+// ====================
+
+// Récupère les informations de l'utilisateur connecté
+// Utilise req.user.id (injecté par le middleware JWT)
+// Permet d'afficher les données sur la page Profil
+
+export const getMyUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        res.status(200).json(user)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+};
+
+// ====================
+// UPDATE MY USER
+// ====================
+
+// Permet à l'utilisateur connecté de modifier ses informations personnelles
+// Utilise req.user.id (injecté par le middleware JWT)
+
+// Sécurité :
+// - whitelist des champs modifiables (userName, email), aucun accès au rôle
+
+export const updateMyUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select("-password")
+        if (!user) return res.status(404).json('User not found !')
+        const userUpdated = await User.findByIdAndUpdate(
+            req.user.id,
+            {
+                $set: {
+                    userName: req.body.userName,
+                    email: req.body.email
+                }
+            },
+            { new: true }
+        ).select("-password")
+        res.status(200).json(userUpdated)
+    } catch (error) {
+        console.log(error)
         res.status(500).json(error.message)
     }
 };

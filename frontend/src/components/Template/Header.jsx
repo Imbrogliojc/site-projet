@@ -27,7 +27,7 @@ const Header = () => {
                             height="32"
                             className="d-inline-block align-text-top"
                         />
-                        <span className="fw-semibold">Nom de l’entreprise</span>
+                        <span className="fw-semibold">CMS Auto</span>
                     </NavLink>
 
                     {/* Burger */}

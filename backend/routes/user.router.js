@@ -1,7 +1,7 @@
 import express from 'express';
 import { verifieToken } from '../middelwares/auth.js';
 
-import { deleteUser, getUserById, getUsers, signup, updateUser, sign, verifyEmail, forgotPassword, resetPassword } from '../controllers/user.controller.js'
+import { deleteUser, getUserById, getUsers, signup, updateUser, sign, verifyEmail, forgotPassword, resetPassword, getMyUser, updateMyUser } from '../controllers/user.controller.js'
 
 const router = express.Router()
 
@@ -12,13 +12,19 @@ router.post('/sign', sign)
 router.post('/forgotPassword', forgotPassword)
 router.post('/resetPassword/:token', resetPassword)
 
-router.get('/get', getUsers)
-
 // Route pour l'email à vérifier
 router.get('/verify', verifyEmail)
 
-router.get('/get/:id', getUserById)
-router.delete('/delete/:id', verifieToken, deleteUser)
+// Route pour récupérer les informations depuis "Mon Profil"
+router.get('/profile', verifieToken, getMyUser)
+
+// Route pour l'update depuis la page "Mon Profil"
+router.put('/profile', verifieToken, updateMyUser)
+
+router.get('/get', getUsers)
 router.put('/update/:id', verifieToken, updateUser)
+router.delete('/delete/:id', verifieToken, deleteUser)
+
+router.get('/get/:id', getUserById)
 
 export default router

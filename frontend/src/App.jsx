@@ -9,6 +9,7 @@ import AdminServices from "./pages/Admin/Services/AdminServices.jsx"
 import AdminDevis from "./pages/Admin/Devis/AdminDevis.jsx"
 import AdminReservations from './pages/Admin/Reservations/AdminReservations.jsx'
 import AdminAddress from './pages/Admin/Address/AdminAddress.jsx'
+import AdminUsers from './pages/Admin/Users/AdminUsers.jsx'
 
 // IMPORT DES PAGES ADMINISTRATEUR
 import Dashboard from "./pages/Admin/Dashboard.jsx"
@@ -65,6 +66,7 @@ function App() {
           <Route path="devis" element={<AdminDevis />} />
           <Route path="reservations" element={<AdminReservations />} />
           <Route path="adresses" element={<AdminAddress />} />
+          <Route path="users" element={<AdminUsers />} />
         </Route>
       </Route>
 
