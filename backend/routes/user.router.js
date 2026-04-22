@@ -1,7 +1,7 @@
 import express from 'express';
 import { verifieToken } from '../middelwares/auth.js';
 
-import { deleteUser, getUserById, getUsers, signup, updateUser, sign, verifyEmail, forgotPassword, resetPassword, getMyUser, updateMyUser } from '../controllers/user.controller.js'
+import { deleteUser, getUserById, getUsers, signup, updateUser, sign, verifyEmail, forgotPassword, resetPassword, getMyUser, updateMyUser, updateMyPassword, deleteMyAccount } from '../controllers/user.controller.js'
 
 const router = express.Router()
 
@@ -20,6 +20,10 @@ router.get('/profile', verifieToken, getMyUser)
 
 // Route pour l'update depuis la page "Mon Profil"
 router.put('/profile', verifieToken, updateMyUser)
+router.put('/password', verifieToken, updateMyPassword)
+
+// Route pour supprimer le compte depuis "Mon Profil"
+router.delete('/profile', verifieToken, deleteMyAccount)
 
 router.get('/get', getUsers)
 router.put('/update/:id', verifieToken, updateUser)

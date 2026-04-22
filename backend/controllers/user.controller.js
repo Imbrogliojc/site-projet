@@ -275,6 +275,78 @@ export const updateMyUser = async (req, res) => {
 };
 
 // ====================
+// UPDATE PASSWORD (USER)
+// ====================
+
+// Permet à un utilisateur connecté de modifier son mot de passe
+
+// Étapes :
+// 1. récupération du user via req.user.id (JWT)
+// 2. vérification de l'ancien mot de passe (bcrypt.compare)
+// 3. hash du nouveau mot de passe (bcrypt.hash)
+// 4. mise à jour en base
+
+// Important :
+// - le mot de passe n'est jamais stocké en clair
+// - vérification obligatoire pour éviter toute modification frauduleuse
+
+export const updateMyPassword = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        if (!user) return res.status(404).json("User not found !")
+
+        // Vérifier ancien password
+        const isMatch = await bcrypt.compare(req.body.oldPassword, user.password)
+        if (!isMatch) return res.status(400).json("Mot de passe incorrect !")
+
+        // Nouveau password hash
+        const hashedPassword = await bcrypt.hash(req.body.newPassword, 10)
+
+        user.password = hashedPassword
+        await user.save()
+
+        res.status(200).json("Mot de passe mis à jour !")
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+};
+
+// ====================
+// DELETE MY ACCOUNT
+// ====================
+
+// Permet à un utilisateur connecté de supprimer son propre compte
+
+// Étapes :
+// 1. récupération du user via req.user.id (JWT)
+// 2. suppression du user en base de données
+// 3. suppression du cookie JWT (logout automatique)
+
+// Important :
+// - route sécurisée (verifieToken)
+// - aucune suppression par id externe (sécurité)
+// - impact direct sur les données liées (devis, réservation)
+
+export const deleteMyAccount = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        if (!user) return res.status(404).json("User not found !")
+
+        await User.findByIdAndDelete(req.user.id)
+
+        res.clearCookie("access_token")
+
+        res.status(200).json("Compte supprimé")
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
+// ====================
 // UPDATE USER
 // ====================
 

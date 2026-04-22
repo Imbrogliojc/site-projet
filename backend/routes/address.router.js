@@ -5,7 +5,7 @@ import { createAddress, getAddresses, getAddressById, updateAddress, deleteAddre
 
 const router = express.Router();
 
-router.post('/create', createAddress);
+router.post('/create',verifieToken, createAddress);
 router.get('/', getAddresses);
 
 router.get('/profile', verifieToken, getMyAddress)
