@@ -26,38 +26,56 @@ const Home = () => {
         </section>
 
         {/* 🔹 BLOC 1 */}
-        <section className="row align-items-center mb-5">
-          <div className="col-md-6">
-            <h3>Un savoir-faire reconnu</h3>
-            <p>
-              Carrosserie, peinture et rénovation intérieure.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </p>
-          </div>
-          <div className="col-md-6">
-            <img 
-              src="https://placehold.co/600x400"
-              alt=""
-              className="img-fluid rounded shadow"
-            />
+        <section className="mb-5">
+          <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div className="row g-0 align-items-center">
+
+              <div className="col-md-6">
+                <div className="card-body p-4">
+                  <h3>Un savoir-faire reconnu</h3>
+                  <p className="text-muted mb-0">
+                    Carrosserie, peinture et rénovation intérieure.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  </p>
+                </div>
+              </div>
+
+              <div className="col-md-6">
+                <img
+                  src="https://placehold.co/600x400"
+                  alt=""
+                  className="img-fluid h-100 w-100 object-fit-cover"
+                />
+              </div>
+
+            </div>
           </div>
         </section>
 
         {/* 🔹 BLOC 2 */}
-        <section className="row align-items-center mb-5">
-          <div className="col-md-6 order-md-2">
-            <h3>Des prestations sur mesure</h3>
-            <p>
-              Adaptées à chaque véhicule et chaque client.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </p>
-          </div>
-          <div className="col-md-6 order-md-1">
-            <img 
-              src="https://placehold.co/600x400"
-              alt=""
-              className="img-fluid rounded shadow"
-            />
+        <section className="mb-5">
+          <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div className="row g-0 align-items-center">
+
+              <div className="col-md-6 order-md-2">
+                <div className="card-body p-4">
+                  <h3>Des prestations sur mesure</h3>
+                  <p className="text-muted mb-0">
+                    Adaptées à chaque véhicule et chaque client.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  </p>
+                </div>
+              </div>
+
+              <div className="col-md-6 order-md-1">
+                <img
+                  src="https://placehold.co/600x400"
+                  alt=""
+                  className="img-fluid h-100 w-100 object-fit-cover"
+                />
+              </div>
+
+            </div>
           </div>
         </section>
 

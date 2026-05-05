@@ -14,7 +14,7 @@ import './header.css'
 const Header = () => {
     const { currentUser, logout } = useContext(AuthContext)
     return (
-        <header>Header
+        <header>
 
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
@@ -23,11 +23,11 @@ const Header = () => {
                         {/* React, image à mettre dans : public ou import depuis src/assets */}
                         <img
                             src="/05-assets/Logo_factice-v1.jpg"
-                            alt="Logo Nom de l’entreprise"
+                            alt="Logo"
                             height="32"
                             className="d-inline-block align-text-top"
                         />
-                        <span className="fw-semibold">CMS Auto</span>
+                        <span className="brand-name">CMS Auto</span>
                     </NavLink>
 
                     {/* Burger */}
@@ -64,42 +64,51 @@ const Header = () => {
                             ))}
                             {!currentUser ? (
                                 <>
-                                    <li className="nav-item">
-                                        <NavLink to="/login" className="nav-link nav-link-custom">
+                                    <li className="nav-item ms-lg-5">
+                                        <NavLink to="/login" className="nav-auth-link nav-auth-outline">
+                                            <i className="bi bi-box-arrow-in-right me-1"></i>
                                             Se connecter
                                         </NavLink>
                                     </li>
 
                                     <li className="nav-item">
-                                        <NavLink to="/register" className="nav-link nav-link-custom">
+                                        <NavLink to="/register" className="nav-auth-link nav-auth-filled">
+                                            <i className="bi bi-person-plus me-1"></i>
                                             Créer un compte
                                         </NavLink>
                                     </li>
                                 </>
                             ) : (
                                 <>
-                                    <li className="nav-item">
-                                        <span className="nav-link">
+                                    <li className="nav-item d-flex align-items-center ms-lg-5">
+                                        <span className="user-name-text">
                                             Bonjour {currentUser?.userName}
                                         </span>
                                     </li>
 
                                     <li className="nav-item">
-                                        <NavLink to="/profil" className="nav-link nav-link-custom">
+                                        <NavLink to="/profil" className="profile-badge-link">
+                                            <i className="bi bi-person-circle me-1"></i>
                                             Mon profil
                                         </NavLink>
                                     </li>
 
                                     {currentUser?.role === "admin" && (
                                         <li className="nav-item">
-                                            <NavLink to="/admin" className="nav-link">
+                                            <NavLink
+                                                to="/admin"
+                                                className={({ isActive }) =>
+                                                    `nav-link nav-link-custom ${isActive ? "active" : ""}`
+                                                }
+                                            >
                                                 Admin
                                             </NavLink>
                                         </li>
                                     )}
-                                    
+
                                     <li className="nav-item">
-                                        <button type="button" onClick={logout} className="nav-link nav-link-custom">
+                                        <button type="button" onClick={logout} className="nav-logout-button">
+                                            <i className="bi bi-box-arrow-right me-1"></i>
                                             Déconnexion
                                         </button>
                                     </li>

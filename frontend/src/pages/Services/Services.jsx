@@ -1,5 +1,7 @@
 import React from 'react'
 import Carousel from '../../components/Carousel/Carousel'
+import ServiceCard from '../../components/Cards/ServiceCard'
+import { servicesData } from '../../utils/data/servicesData'
 
 const Services = () => {
   return (
@@ -20,67 +22,30 @@ const Services = () => {
           <h2 className="text-center mb-4">Nos prestations</h2>
 
           <div className="row g-4">
-
-            {/* Card 1 */}
-            <div className="col-md-4">
-              <div className="card h-100 shadow">
-                <img src="https://placehold.co/400x250" className="card-img-top" alt="" />
-                <div className="card-body">
-                  <h5 className="card-title">Achat / Revente</h5>
-                  <p className="card-text">
-                    Lorem ipsum dolor sit amet, accompagnement complet pour l'achat
-                    ou la vente de votre véhicule.
-                  </p>
-                </div>
+            {servicesData.map((service, index) => (
+              <div className="col-md-4" key={index}>
+                <ServiceCard
+                  title={service.title}
+                  description={service.description}
+                  image={service.image}
+                />
               </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="col-md-4">
-              <div className="card h-100 shadow">
-                <img src="https://placehold.co/400x250" className="card-img-top" alt="" />
-                <div className="card-body">
-                  <h5 className="card-title">Carrosserie / Peinture</h5>
-                  <p className="card-text">
-                    Réparation, rénovation et peinture de votre véhicule avec
-                    un rendu professionnel.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="col-md-4">
-              <div className="card h-100 shadow">
-                <img src="https://placehold.co/400x250" className="card-img-top" alt="" />
-                <div className="card-body">
-                  <h5 className="card-title">Aménagement intérieur</h5>
-                  <p className="card-text">
-                    Personnalisation intérieure : ciel de toit, finitions et
-                    amélioration du confort.
-                  </p>
-                </div>
-              </div>
-            </div>
-
+            ))}
           </div>
         </section>
 
         {/* 🔹 APPROCHE (CARD HORIZONTALE) */}
         <section>
           <h2 className="text-center mb-4">Notre approche</h2>
-
-          <div className="card shadow">
+          <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
             <div className="row g-0 align-items-center">
-
               <div className="col-md-6">
                 <img
                   src="https://placehold.co/600x400"
                   alt=""
-                  className="img-fluid rounded-start"
+                  className="img-fluid h-100 w-100 object-fit-cover"
                 />
               </div>
-
               <div className="col-md-6">
                 <div className="card-body">
                   <h5 className="card-title">Une prestation sur mesure</h5>
@@ -89,14 +54,16 @@ const Services = () => {
                     Chaque projet est étudié individuellement pour vous proposer
                     la solution la plus adaptée.
                   </p>
-                  <a href="/devis" className="btn btn-warning">
-                    Demander un devis
-                  </a>
                 </div>
               </div>
-
             </div>
           </div>
+        </section>
+
+        <section className="text-center mt-5">
+          <a href="/devis" className="btn btn-warning btn-lg">
+            Demander un devis
+          </a>
         </section>
 
       </div>

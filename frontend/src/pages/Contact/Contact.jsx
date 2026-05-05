@@ -148,7 +148,8 @@ const Contact = () => {
                 ></textarea>
               </div>
 
-              <button className="btn btn-warning w-100">
+              <button type="submit" className="btn btn-warning w-100 fw-semibold">
+                <i className="bi bi-send me-1"></i>
                 Envoyer le message
               </button>
             </form>

@@ -1,4 +1,4 @@
-// CENTRALISATION DES ROUTES : BASE_URL
+// CENTRALISATION DES URLs DE L'API : BASE_URL
 const BASE_URL = 'http://localhost:8000/api'
 
 const URL = {
