@@ -4,49 +4,55 @@ import './Carousel.css';
 import { CAROUSEL_SLIDES } from '../../config/carousel';
 
 const Carousel = ({ variant }) => {
-    const slides = CAROUSEL_SLIDES[variant];
+    const slides = CAROUSEL_SLIDES[variant] || [];
+    const carouselId = `carousel-${variant}`;
+    if (slides.length === 0) {
+        return null;
+    }
+
     return (
 
-        // Se souvenir pour plus tard que id="heroCarousel" devra être dynamique : home, services, réalisations
-
-        <div id="heroCarousel" className="carousel slide" data-bs-ride="carousel">
+        <div id={carouselId} className="carousel slide" data-bs-ride="carousel">
             <div className="carousel-indicators">
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                {slides.map((slide, index) => (
+                    <button
+                        key={index}
+                        type="button"
+                        data-bs-target={`#${carouselId}`}
+                        data-bs-slide-to={index}
+                        className={index === 0 ? "active" : ""}
+                        aria-current={index === 0 ? "true" : undefined}
+                        aria-label={`Slide ${index + 1}`}
+                    ></button>
+                ))}
             </div>
 
-            <div className="carousel-inner">               
-
+            <div className="carousel-inner">
                 {slides.map((slide, index) => (
-                <div
-                key={index}
-                className={`carousel-item ${index === 0 ? "active" : ""}`}>                
-                    {/* Plus tard modification certainement avec montage image sur fond de couleur */}
-                    <div className="bg-primary text-white d-flex align-items-center justify-content-center"
-                        style={{
-                            height: '400px',
-                            backgroundImage: `url(${slide.image})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center'
-                        }}>
-                        {/* L'icone ne sera peut être pas conservé */}
-                        <div className="text-center">
-                            <i className="bi bi-stars fs-1 mb-3"></i>
-                            <h1 className="display-4">{slide.title}</h1>
-                            <p className="lead">{slide.description}</p>
-                            <button type="button" className="btn btn-light btn-lg">Voir les nouveautés</button>
+                    <div
+                        key={index}
+                        className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                        <div className="text-white d-flex align-items-center justify-content-center position-relative"
+                            style={{
+                                height: '400px',
+                                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${slide.image})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center'
+                            }}>
+                            <div className="text-center px-4">
+                                <h1 className="display-4 fw-bold">{slide.title}</h1>
+                                <p className="lead">{slide.description}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
                 ))}
 
             </div>
 
-            <button className="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <button className="carousel-control-prev" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="prev">
                 <span className="carousel-control-prev-icon"></span>
             </button>
-            <button className="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <button className="carousel-control-next" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="next">
                 <span className="carousel-control-next-icon"></span>
             </button>
         </div>

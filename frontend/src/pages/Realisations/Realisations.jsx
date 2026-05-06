@@ -8,12 +8,7 @@ const Realisations = () => {
     <div>
 
       {/* 🔹 HERO */}
-      <Carousel
-        variant="realisations"
-        title="Nos réalisations"
-        description="Découvrez nos projets récents"
-        image="https://placehold.co/1200x400"
-      />
+      <Carousel variant="realisations" />
 
       <div className="container my-5">
 
@@ -36,7 +31,7 @@ const Realisations = () => {
             Demander un devis
           </a>
         </section>
-        
+
       </div>
     </div>
   )

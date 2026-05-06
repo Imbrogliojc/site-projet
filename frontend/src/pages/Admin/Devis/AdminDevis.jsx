@@ -2,6 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import URL from "../../../config/api.js";
 
+const formatDate = (date) => {
+    if (!date) return "-"
+    return new Date(date).toLocaleDateString("fr-FR")
+}
+
+const formatTypeClient = (typeClient) => {
+    if (typeClient === "particulier") return "Particulier"
+    if (typeClient === "pro") return "Professionnel"
+}
+
 const AdminDevis = () => {
     const [devis, setDevis] = useState([])
     const [editId, setEditId] = useState(null)
@@ -128,8 +138,8 @@ const AdminDevis = () => {
 
                 <thead className="table-dark">
                     <tr>
-                        <th>ID</th>
                         <th>Client</th>
+                        <th>Type client</th>
                         <th>Service</th>
                         <th>Véhicule</th>
                         <th>Photos</th>
@@ -143,11 +153,15 @@ const AdminDevis = () => {
                     {devisEnCours.map((d) => (
                         <tr key={d._id}>
 
-                            {/* 🔹 ID */}
-                            <td className="text-muted small">{d._id}</td>
-
                             {/* 🔹 CLIENT */}
                             <td>{d.member?.userName}</td>
+
+                            {/* 🔹 TYPE CLIENT */}
+                            <td>
+                                <span className="badge bg-light text-dark border">
+                                    {formatTypeClient(d.typeClient)}
+                                </span>
+                            </td>
 
                             {/* 🔹 SERVICE */}
                             <td>{d.service?.serviceName || "—"}</td>
@@ -231,7 +245,7 @@ const AdminDevis = () => {
                                         <span>{d.prixTtc ? `${d.prixTtc} €` : "—"}</span>
 
                                         <span className="text-muted small">
-                                            <i className="bi bi-calendar-date"></i> {d.dateIt || "—"}
+                                            <i className="bi bi-calendar-date"></i> {formatDate(d.dateIt)}
                                         </span>
 
                                         <span className="text-muted small">
@@ -313,8 +327,8 @@ const AdminDevis = () => {
 
                 <thead className="table-dark">
                     <tr>
-                        <th>ID</th>
                         <th>Client</th>
+                        <th>Type client</th>
                         <th>Service</th>
                         <th>Véhicule</th>
                         <th>Photos</th>
@@ -327,11 +341,15 @@ const AdminDevis = () => {
                     {devisArchives.map((d) => (
                         <tr key={d._id}>
 
-                            {/* 🔹 ID */}
-                            <td className="text-muted small">{d._id}</td>
-
                             {/* 🔹 CLIENT */}
                             <td>{d.member?.userName}</td>
+
+                            {/* 🔹 TYPE CLIENT */}
+                            <td>
+                                <span className="badge bg-light text-dark border">
+                                    {formatTypeClient(d.typeClient)}
+                                </span>
+                            </td>
 
                             {/* 🔹 SERVICE */}
                             <td>{d.service?.serviceName || "—"}</td>
@@ -415,7 +433,7 @@ const AdminDevis = () => {
                                         <span>{d.prixTtc ? `${d.prixTtc} €` : "—"}</span>
 
                                         <span className="text-muted small">
-                                            <i className="bi bi-calendar-date"></i> {d.dateIt || "—"}
+                                            <i className="bi bi-calendar-date"></i> {formatDate(d.dateIt)}
                                         </span>
 
                                         <span className="text-muted small">

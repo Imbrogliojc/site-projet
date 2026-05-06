@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import URL from "../../../config/api.js";
 
+const formatDate = (date) => {
+    if (!date) return "-"
+    return new Date(date).toLocaleDateString("fr-FR")
+}
+
 const AdminReservations = () => {
   const [reservations, setReservations] = useState([])
   const [editId, setEditId] = useState(null)
@@ -85,7 +90,6 @@ const AdminReservations = () => {
 
         <thead className="table-dark">
           <tr>
-            <th>ID</th>
             <th>Client</th>
             <th>Service</th>
             <th>Véhicule</th>
@@ -101,8 +105,6 @@ const AdminReservations = () => {
           {reservations.map((reservation) => (
             <tr key={reservation._id}>
 
-              <td className="text-muted small">{reservation._id}</td>
-
               <td>{reservation.devis?.member?.userName || "-"}</td>
 
               <td>{reservation.devis?.service?.serviceName || "-"}</td>
@@ -113,7 +115,7 @@ const AdminReservations = () => {
 
               <td>
                 <i className="bi bi-calendar-date"></i>{" "}
-                {reservation.devis?.dateIt || "—"}
+                {formatDate(reservation.devis?.dateIt)}
               </td>
 
               <td>

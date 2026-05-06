@@ -8,12 +8,7 @@ const Services = () => {
     <div>
 
       {/* 🔹 HERO */}
-      <Carousel
-        variant="services"
-        title="Nos services"
-        description="Des prestations adaptées à tous vos besoins automobiles"
-        image="https://placehold.co/1200x400"
-      />
+      <Carousel variant="services" />
 
       <div className="container my-5">
 

@@ -78,7 +78,6 @@ const AdminAddress = () => {
 
                 <thead className="table-dark">
                     <tr>
-                        <th>ID</th>
                         <th>Utilisateur</th>
                         <th>Rue</th>
                         <th>Ville</th>
@@ -91,8 +90,6 @@ const AdminAddress = () => {
                 <tbody>
                     {addresses.map((address) => (
                         <tr key={address._id}>
-
-                            <td className="text-muted small">{address._id}</td>
 
                             <td>{address.member?.userName || "-"}</td>
 
@@ -123,7 +120,7 @@ const AdminAddress = () => {
                                         }
                                     />
                                 ) : (
-                                    <address className="ville"></address>
+                                    address.ville
                                 )}
                             </td>
 

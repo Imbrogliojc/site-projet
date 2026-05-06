@@ -93,6 +93,13 @@ const Header = () => {
                                         </NavLink>
                                     </li>
 
+                                    <li className="nav-item">
+                                        <button type="button" onClick={logout} className="nav-logout-button">
+                                            <i className="bi bi-box-arrow-right me-1"></i>
+                                            Déconnexion
+                                        </button>
+                                    </li>
+
                                     {currentUser?.role === "admin" && (
                                         <li className="nav-item">
                                             <NavLink
@@ -105,13 +112,6 @@ const Header = () => {
                                             </NavLink>
                                         </li>
                                     )}
-
-                                    <li className="nav-item">
-                                        <button type="button" onClick={logout} className="nav-logout-button">
-                                            <i className="bi bi-box-arrow-right me-1"></i>
-                                            Déconnexion
-                                        </button>
-                                    </li>
                                 </>
                             )}
                         </ul>

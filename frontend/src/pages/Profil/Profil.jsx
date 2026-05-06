@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 import URL from '../../config/api.js';
 
+const formatDate = (date) => {
+  if (!date) return "-"
+  return new Date(date).toLocaleDateString("fr-FR")
+}
+
 const Profil = () => {
 
   const { currentUser } = useContext(AuthContext)
@@ -447,9 +452,7 @@ const Profil = () => {
                       {reservation ? (
                         <>
                           <strong>Date :</strong>{" "}
-                          {reservation.devis?.dateIt
-                            ? new Date(reservation.devis.dateIt).toLocaleDateString()
-                            : "—"}
+                          {formatDate(reservation.devis?.dateIt)}
                           <br />
                           <strong>Heure :</strong>{" "}
                           {reservation.devis?.heureIt || "—"}

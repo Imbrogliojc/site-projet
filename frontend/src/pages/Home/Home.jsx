@@ -6,12 +6,7 @@ const Home = () => {
     <div>
 
       {/* 🔹 HERO */}
-      <Carousel
-        variant="home"
-        title="Votre spécialiste automobile"
-        description="Achat, rénovation et personnalisation de véhicules"
-        image="https://placehold.co/1200x400"
-      />
+      <Carousel variant="home" />
 
       <div className="container my-5">
 
