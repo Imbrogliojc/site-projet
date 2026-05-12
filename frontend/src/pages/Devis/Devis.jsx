@@ -104,7 +104,7 @@ const Devis = () => {
       <div className="text-center mb-5">
         <h1>Demande de devis</h1>
         <p className="text-muted">
-          Décrivez votre véhicule et le service souhaité afin que nous puissions vous répondre rapidement.
+          Présentez votre véhicule et le service souhaité afin d’obtenir une première estimation adaptée à votre besoin.
         </p>
       </div>
 
@@ -112,15 +112,16 @@ const Devis = () => {
         <div className="col-lg-8">
           <div className="card shadow-sm p-4">
 
-            <h3 className="mb-3">Votre demande</h3>
+            <h3 className="mb-3">Votre projet automobile</h3>
 
             <p className="text-muted mb-4">
-              Une fois votre demande envoyée, vous pourrez suivre son avancement depuis votre espace <strong>Mon profil</strong>.
+              Après l’envoi de votre demande, celle-ci sera étudiée afin de vous proposer une réponse adaptée.
+              Vous pourrez suivre son avancement depuis votre espace <strong>Mon profil</strong>.
             </p>
 
             {success && (
               <div className="alert alert-success">
-                Votre demande de devis a bien été envoyée. Vous pourrez suivre son avancement depuis votre espace <strong>Mon profil</strong>.
+                Votre demande de devis a bien été envoyée. Elle sera étudiée prochainement et vous pourrez suivre son avancement depuis votre espace Mon profil.
               </div>
             )}
 
@@ -191,7 +192,7 @@ const Devis = () => {
                 />
 
                 <div className="form-text">
-                  Vous pouvez ajouter jusqu’à 5 photos pour aider à l’estimation.
+                  Vous pouvez ajouter jusqu’à 5 photos afin de faciliter l’analyse de votre demande.
                 </div>
 
                 {devis.img.length > 0 && (

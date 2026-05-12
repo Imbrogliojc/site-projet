@@ -32,22 +32,22 @@ const Services = () => {
         {/* 🔹 APPROCHE (CARD HORIZONTALE) */}
         <section>
           <h2 className="text-center mb-4">Notre approche</h2>
-          <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
+          <div className="card card-orange-outline rounded-4 overflow-hidden">
             <div className="row g-0 align-items-center">
               <div className="col-md-6">
                 <img
-                  src="https://placehold.co/600x400"
-                  alt=""
+                  src="/images/services/approcheAdaptee.webp"
+                  alt="Une approche adaptée à chaque projet"
                   className="img-fluid h-100 w-100 object-fit-cover"
                 />
               </div>
               <div className="col-md-6">
                 <div className="card-body">
-                  <h5 className="card-title">Une prestation sur mesure</h5>
-                  <p className="card-text">
-                    Nous travaillons à l’heure ou sur devis selon vos besoins.
-                    Chaque projet est étudié individuellement pour vous proposer
-                    la solution la plus adaptée.
+                  <h5 className="card-title">Une approche adaptée à chaque projet</h5>
+                  <p className="text-muted mb-0 horizontal-card-text">
+                    Chaque demande est étudiée selon l’état du véhicule, le type d’intervention
+                    et les attentes du client. Nous proposons un accompagnement clair, avec une
+                    estimation adaptée sur place ou à partir des informations transmises en ligne.
                   </p>
                 </div>
               </div>

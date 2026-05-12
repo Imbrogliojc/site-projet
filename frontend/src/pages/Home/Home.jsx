@@ -14,31 +14,31 @@ const Home = () => {
         <section className="text-center mb-5">
           <h2 className="mb-3">À propos de nous</h2>
           <p className="lead">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Nous accompagnons nos clients dans leurs projets automobiles
-            avec expertise et passion.
+            Nous accompagnons nos clients dans l’achat, la remise en état
+            et la valorisation de véhicules d’occasion. Notre objectif est de proposer
+            des solutions adaptées, avec un suivi clair et un travail soigné.
           </p>
         </section>
 
         {/* 🔹 BLOC 1 */}
         <section className="mb-5">
-          <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
+          <div className="card card-orange-outline rounded-4 overflow-hidden">
             <div className="row g-0 align-items-center">
 
               <div className="col-md-6">
                 <div className="card-body p-4">
-                  <h3>Un savoir-faire reconnu</h3>
-                  <p className="text-muted mb-0">
-                    Carrosserie, peinture et rénovation intérieure.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  <h3>Un savoir-faire automobile</h3>
+                  <p className="text-muted mb-0 horizontal-card-text">
+                    De la carrosserie à la peinture, nous intervenons sur différents besoins
+                    afin de redonner de la valeur et du caractère à chaque véhicule.
                   </p>
                 </div>
               </div>
 
               <div className="col-md-6">
                 <img
-                  src="https://placehold.co/600x400"
-                  alt=""
+                  src="/images/home/savoirFaireAdapte.webp"
+                  alt="Un savoir-faire automobile"
                   className="img-fluid h-100 w-100 object-fit-cover"
                 />
               </div>
@@ -49,23 +49,23 @@ const Home = () => {
 
         {/* 🔹 BLOC 2 */}
         <section className="mb-5">
-          <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
+          <div className="card card-orange-outline rounded-4 overflow-hidden">
             <div className="row g-0 align-items-center">
 
               <div className="col-md-6 order-md-2">
                 <div className="card-body p-4">
                   <h3>Des prestations sur mesure</h3>
-                  <p className="text-muted mb-0">
-                    Adaptées à chaque véhicule et chaque client.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  <p className="text-muted mb-0 horizontal-card-text">
+                    Chaque projet est étudié selon l’état du véhicule, les attentes du client
+                    et le niveau d’intervention souhaité.
                   </p>
                 </div>
               </div>
 
               <div className="col-md-6 order-md-1">
                 <img
-                  src="https://placehold.co/600x400"
-                  alt=""
+                  src="/images/home/prestationSurMesure.webp"
+                  alt="Des prestations sur mesure"
                   className="img-fluid h-100 w-100 object-fit-cover"
                 />
               </div>

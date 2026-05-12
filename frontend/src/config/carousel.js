@@ -1,55 +1,55 @@
 export const CAROUSEL_SLIDES = {
   home: [
     {
-      title: "Votre spécialiste automobile",
-      description: "Achat, rénovation et personnalisation de véhicules",
-      image: "/images/carousel/home-1.jpg"
+      title: "Votre véhicule mérite le meilleur",
+      description: "Véhicules d’occasion, pièces détachées et remise en état automobile.",
+      image: "/images/home/carousel_home_1.webp"
     },
     {
-      title: "Un savoir-faire reconnu",
-      description: "Des prestations automobiles réalisées avec soin",
-      image: "/images/carousel/home-2.jpg"
+      title: "Un accompagnement personnalisé",
+      description: "Nous vous conseillons à chaque étape, de l’achat à la rénovation.",
+      image: "/images/home/carousel_home_2.webp"
     },
     {
-      title: "Des solutions sur mesure",
-      description: "Un accompagnement adapté à chaque véhicule",
-      image: "/images/carousel/home-3.jpg"
+      title: "Redonnez de la valeur à votre véhicule",
+      description: "Carrosserie, peinture et finitions soignées pour un rendu durable.",
+      image: "/images/home/carousel_home_3.webp"
     }
   ],
 
   services: [
     {
-      title: "Nos services",
-      description: "Des prestations adaptées à tous vos besoins automobiles",
-      image: "/images/carousel/services-1.jpg"
+      title: "Des services pour votre véhicule",
+      description: "De la pièce détachée à la remise en état complète.",
+      image: "/images/services/carousel_services_1.webp"
     },
     {
-      title: "Rénovation automobile",
-      description: "Un travail précis pour redonner de la valeur à votre véhicule",
-      image: "/images/carousel/services-2.jpg"
+      title: "Carrosserie et peinture",
+      description: "Réparation, préparation et finition pour retrouver un véhicule soigné.",
+      image: "/images/services/carousel_services_2.webp"
     },
     {
-      title: "Un service personnalisé",
-      description: "Chaque demande est étudiée selon vos besoins",
-      image: "/images/carousel/services-3.jpg"
+      title: "Achat, revente et pièces détachées",
+      description: "Des solutions adaptées pour entretenir, réparer ou valoriser votre véhicule.",
+      image: "/images/services/carousel_services_3.webp"
     }
   ],
 
   realisations: [
     {
       title: "Nos réalisations",
-      description: "Découvrez quelques projets réalisés récemment",
-      image: "/images/carousel/realisations-1.jpg"
+      description: "Des interventions concrètes, du détail à la remise en état complète.",
+      image: "/images/realisations/carousel_realisations_1.webp"
+    },
+    {
+      title: "Un travail visible dans les finitions",
+      description: "Chaque réparation est réalisée avec soin et précision.",
+      image: "/images/realisations/carousel_realisations_2.webp"
     },
     {
       title: "Avant / après",
-      description: "Des transformations visibles et soignées",
-      image: "/images/carousel/realisations-2.jpg"
-    },
-    {
-      title: "Qualité de finition",
-      description: "Un rendu travaillé jusque dans les détails",
-      image: "/images/carousel/realisations-3.jpg"
+      description: "Découvrez comment une intervention peut transformer un véhicule.",
+      image: "/images/realisations/carousel_realisations_3.webp"
     }
   ]
 }

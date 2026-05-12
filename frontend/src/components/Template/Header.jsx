@@ -1,5 +1,4 @@
-import React from 'react'
-import { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../utils/context/AuthContext.jsx'
 
 // Import { HEADER_LINK } from './Header.js'
@@ -13,6 +12,12 @@ import './header.css'
 
 const Header = () => {
     const { currentUser, logout } = useContext(AuthContext)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    const closeMenu = () => {
+        setIsMenuOpen(false)
+    }
+
     return (
         <header>
 
@@ -20,7 +25,6 @@ const Header = () => {
                 <div className="container-fluid">
                     {/* Brand */}
                     <NavLink className="navbar-brand d-flex align-items-center gap-2" to="/">
-                        {/* React, image à mettre dans : public ou import depuis src/assets */}
                         <img
                             src="/05-assets/Logo_factice-v1.jpg"
                             alt="Logo"
@@ -34,18 +38,17 @@ const Header = () => {
                     <button
                         className="navbar-toggler"
                         type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarNav"
+                        onClick={() => setIsMenuOpen(prev => !prev)}
                         aria-controls="navbarNav"
-                        aria-expanded="false"
+                        aria-expanded={isMenuOpen}
                         aria-label="Ouvrir / fermer le menu"
                     >
                         <span className="navbar-toggler-icon"></span>
                     </button>
 
                     {/* Links */}
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav ms-auto">
+                    <div className={`navbar-collapse ${isMenuOpen ? "show" : "collapse"}`} id="navbarNav">
+                        <ul className="navbar-nav main-nav-center align-items-lg-center">
 
                             {/* C'est ici que je .map mon fichier header.js */}
                             {HEADER_LINK.map((Link) => (
@@ -53,6 +56,7 @@ const Header = () => {
 
                                     <NavLink
                                         to={Link.path}
+                                        onClick={closeMenu}
                                         className={({ isActive }) =>
                                             `nav-link nav-link-custom ${isActive ? 'active' : ''}`
                                         }
@@ -62,17 +66,20 @@ const Header = () => {
 
                                 </li>
                             ))}
+                        </ul>
+
+                        <ul className="navbar-nav ms-lg-auto align-items-lg-center">
                             {!currentUser ? (
                                 <>
-                                    <li className="nav-item ms-lg-5">
-                                        <NavLink to="/login" className="nav-auth-link nav-auth-outline">
+                                    <li className="nav-item">
+                                        <NavLink to="/login" onClick={closeMenu} className="nav-auth-link nav-auth-outline">
                                             <i className="bi bi-box-arrow-in-right me-1"></i>
                                             Se connecter
                                         </NavLink>
                                     </li>
 
                                     <li className="nav-item">
-                                        <NavLink to="/register" className="nav-auth-link nav-auth-filled">
+                                        <NavLink to="/register" onClick={closeMenu} className="nav-auth-link nav-auth-filled">
                                             <i className="bi bi-person-plus me-1"></i>
                                             Créer un compte
                                         </NavLink>
@@ -80,30 +87,17 @@ const Header = () => {
                                 </>
                             ) : (
                                 <>
-                                    <li className="nav-item d-flex align-items-center ms-lg-5">
+                                    <li className="nav-item d-flex align-items-center">
                                         <span className="user-name-text">
                                             Bonjour {currentUser?.userName}
                                         </span>
-                                    </li>
-
-                                    <li className="nav-item">
-                                        <NavLink to="/profil" className="profile-badge-link">
-                                            <i className="bi bi-person-circle me-1"></i>
-                                            Mon profil
-                                        </NavLink>
-                                    </li>
-
-                                    <li className="nav-item">
-                                        <button type="button" onClick={logout} className="nav-logout-button">
-                                            <i className="bi bi-box-arrow-right me-1"></i>
-                                            Déconnexion
-                                        </button>
                                     </li>
 
                                     {currentUser?.role === "admin" && (
                                         <li className="nav-item">
                                             <NavLink
                                                 to="/admin"
+                                                onClick={closeMenu}
                                                 className={({ isActive }) =>
                                                     `nav-link nav-link-custom ${isActive ? "active" : ""}`
                                                 }
@@ -112,6 +106,26 @@ const Header = () => {
                                             </NavLink>
                                         </li>
                                     )}
+
+                                    <li className="nav-item">
+                                        <NavLink to="/profil" onClick={closeMenu} className="profile-badge-link">
+                                            <i className="bi bi-person-circle me-1"></i>
+                                            Mon profil
+                                        </NavLink>
+                                    </li>
+
+
+                                    <li className="nav-item">
+                                        <button type="button"
+                                            onClick={() => {
+                                                closeMenu()
+                                                logout()
+                                            }}
+                                            className="nav-logout-button">
+                                            <i className="bi bi-box-arrow-right me-1"></i>
+                                            Déconnexion
+                                        </button>
+                                    </li>
                                 </>
                             )}
                         </ul>

@@ -63,7 +63,7 @@ const Contact = () => {
       <div className="text-center mb-5">
         <h1>Contactez-nous</h1>
         <p className="text-muted">
-          Une question ? Un projet ? N'hésitez pas à nous contacter.
+          Une question, un besoin ou un projet automobile ? Contactez-nous afin d’échanger sur votre demande.
         </p>
       </div>
 
@@ -73,7 +73,7 @@ const Contact = () => {
         <div className="col-md-6">
           <div className="card shadow-sm p-4">
 
-            <h3 className="mb-3">Envoyez-nous un message</h3>
+            <h3 className="mb-3">Envoyer une demande</h3>
 
             {success && (
               <div className="alert alert-success">
@@ -163,19 +163,19 @@ const Contact = () => {
 
             <h3 className="mb-3">Nos coordonnées</h3>
 
-            <p><strong>Téléphone :</strong> +33 1 23 45 67 89</p>
-            <p><strong>Email :</strong> contact@monentreprise.com</p>
+            <p><strong>Téléphone :</strong> 01 23 45 67 89</p>
+            <p><strong>Email :</strong> contact@cms-auto.fr</p>
 
             <p>
               <strong>Adresse :</strong><br />
-              123 Avenue des Champs-Élysées<br />
-              75008 Paris
+              Île-de-France<br />
+              Intervention sur rendez-vous
             </p>
 
             <p>
               <strong>Horaires :</strong><br />
               Lundi - Vendredi : 9h - 18h<br />
-              Samedi : 10h - 16h
+              Samedi : sur rendez-vous
             </p>
 
             {/* MAP */}

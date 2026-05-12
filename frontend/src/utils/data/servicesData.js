@@ -1,20 +1,17 @@
 export const servicesData = [
   {
-    title: "Achat / Revente",
-    description:
-      "Lorem ipsum dolor sit amet, accompagnement complet pour l'achat ou la vente de votre véhicule.",
-    image: "https://placehold.co/400x250"
+    title: "Carrosserie et peinture",
+    description: "Réparation, préparation et peinture pour redonner un aspect soigné à votre véhicule.",
+    image: "/images/services/carrosseriePeinture.webp"
   },
   {
-    title: "Carrosserie / Peinture",
-    description:
-      "Réparation, rénovation et peinture de votre véhicule avec un rendu professionnel.",
-    image: "https://placehold.co/400x250"
+    title: "Achat et revente",
+    description: "Accompagnement dans l’achat ou la revente de véhicules d’occasion selon vos besoins.",
+    image: "/images/services/achatRevente.webp"
   },
   {
-    title: "Aménagement intérieur",
-    description:
-      "Personnalisation intérieure : ciel de toit, finitions et amélioration du confort.",
-    image: "https://placehold.co/400x250"
+    title: "Vente de pièces détachées",
+    description: "Recherche et vente de pièces adaptées pour l’entretien, la réparation ou la restauration.",
+    image: "/images/services/piecesDetachees.webp"
   }
 ]
