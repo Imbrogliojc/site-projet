@@ -11,7 +11,7 @@ const formatDate = (date) => {
 
 const Profil = () => {
 
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser, logout } = useContext(AuthContext)
   const navigate = useNavigate()
 
   const [myDevis, setMyDevis] = useState([])
@@ -166,8 +166,7 @@ const Profil = () => {
         withCredentials: true
       })
 
-      localStorage.removeItem("auth")
-      navigate('/')
+      logout()
 
     } catch (error) {
       console.log(error)

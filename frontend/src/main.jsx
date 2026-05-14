@@ -1,7 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './index.css';
 import App from './App.jsx';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop.jsx';
+import './index.css';
 
 // CONTEXT
 import { BrowserRouter } from 'react-router-dom';
@@ -17,6 +18,7 @@ import { ToastContainer, toast } from 'react-toastify';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+      <ScrollToTop />
       <AuthProvider>
         <App />
         <ToastContainer />

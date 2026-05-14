@@ -25,7 +25,7 @@ const Home = () => {
           <div className="card card-orange-outline rounded-4 overflow-hidden">
             <div className="row g-0 align-items-center">
 
-              <div className="col-md-6">
+              <div className="col-12 col-lg-6 order-2 order-lg-1">
                 <div className="card-body p-4">
                   <h3>Un savoir-faire automobile</h3>
                   <p className="text-muted mb-0 horizontal-card-text">
@@ -35,7 +35,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-lg-6 order-1 order-lg-2">
                 <img
                   src="/images/home/savoirFaireAdapte.webp"
                   alt="Un savoir-faire automobile"
@@ -52,7 +52,7 @@ const Home = () => {
           <div className="card card-orange-outline rounded-4 overflow-hidden">
             <div className="row g-0 align-items-center">
 
-              <div className="col-md-6 order-md-2">
+              <div className="col-12 col-lg-6 order-2 order-lg-2">
                 <div className="card-body p-4">
                   <h3>Des prestations sur mesure</h3>
                   <p className="text-muted mb-0 horizontal-card-text">
@@ -62,7 +62,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="col-md-6 order-md-1">
+              <div className="col-12 col-lg-6 order-1 order-lg-1">
                 <img
                   src="/images/home/prestationSurMesure.webp"
                   alt="Des prestations sur mesure"

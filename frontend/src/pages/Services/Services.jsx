@@ -2,6 +2,7 @@ import React from 'react'
 import Carousel from '../../components/Carousel/Carousel'
 import ServiceCard from '../../components/Cards/ServiceCard'
 import { servicesData } from '../../utils/data/servicesData'
+import { NavLink } from 'react-router'
 
 const Services = () => {
   return (
@@ -18,7 +19,7 @@ const Services = () => {
 
           <div className="row g-4">
             {servicesData.map((service, index) => (
-              <div className="col-md-4" key={index}>
+              <div className="col-12 col-lg-4" key={index}>
                 <ServiceCard
                   title={service.title}
                   description={service.description}
@@ -56,9 +57,9 @@ const Services = () => {
         </section>
 
         <section className="text-center mt-5">
-          <a href="/devis" className="btn btn-warning btn-lg">
+          <NavLink to="/devis" className="btn btn-warning btn-lg">
             Demander un devis
-          </a>
+          </NavLink>
         </section>
 
       </div>

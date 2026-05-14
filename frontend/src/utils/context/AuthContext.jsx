@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
             )
             console.log("Register succes :", response.data)
             setError(null)
-            toast.success("Inscription réussie !")
+            toast.success("Compte créé ! Un email de validation vous a été envoyé !")
             navigate('/login')
 
         } catch (error){

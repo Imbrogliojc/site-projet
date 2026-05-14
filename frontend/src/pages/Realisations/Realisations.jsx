@@ -2,8 +2,10 @@ import React from 'react'
 import Carousel from '../../components/Carousel/Carousel'
 import RealisationCard from '../../components/Cards/RealisationCard'
 import { realisationsData } from '../../utils/data/realisationsData'
+import { NavLink } from 'react-router'
 
 const Realisations = () => {
+
   return (
     <div>
 
@@ -16,7 +18,7 @@ const Realisations = () => {
 
         <div className="row g-4">
           {realisationsData.map((item, index) => (
-            <div className="col-md-4" key={index}>
+            <div className="col-12 col-lg-4" key={index}>
               <RealisationCard
                 title={item.title}
                 description={item.description}
@@ -27,9 +29,9 @@ const Realisations = () => {
         </div>
 
         <section className="text-center mt-5">
-          <a href="/devis" className="btn btn-warning btn-lg">
+          <NavLink to="/devis" className="btn btn-warning btn-lg">
             Demander un devis
-          </a>
+          </NavLink>
         </section>
 
       </div>

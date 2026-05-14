@@ -70,7 +70,7 @@ const Contact = () => {
       <div className="row g-4">
 
         {/* 🟦 FORMULAIRE */}
-        <div className="col-md-6">
+        <div className="col-12 col-lg-6">
           <div className="card shadow-sm p-4">
 
             <h3 className="mb-3">Envoyer une demande</h3>
@@ -158,7 +158,7 @@ const Contact = () => {
         </div>
 
         {/* 🟨 INFOS */}
-        <div className="col-md-6">
+        <div className="col-12 col-lg-6">
           <div className="card shadow-sm p-4 h-100">
 
             <h3 className="mb-3">Nos coordonnées</h3>

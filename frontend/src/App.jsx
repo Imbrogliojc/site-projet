@@ -22,6 +22,10 @@ import Realisations from './pages/Realisations/Realisations'
 import Devis from './pages/Devis/Devis'
 import Profil from './pages/Profil/Profil'
 import Contact from './pages/Contact/Contact'
+import CGU from './pages/Publiques/CGU.jsx'
+import CGV from './pages/Publiques/CGV.jsx'
+import MentionsLegales from './pages/Publiques/MentionsLegales.jsx'
+import PolitiqueConfidentialite from './pages/Publiques/PolitiqueConfidentialite.jsx'
 import Register from './pages/Auth/Register'
 import Login from './pages/Auth/Login'
 import ForgotPassword from './pages/Auth/ForgotPassword.jsx'
@@ -45,7 +49,11 @@ function App() {
         <Route path='services' element={<Services />} />
         <Route path='realisations' element={<Realisations />} />
         <Route path='contact' element={<Contact />} />
-        <Route path='devis' element={<Devis />} />
+
+        <Route path='CGU' element={<CGU />} />
+        <Route path='CGV' element={<CGV />} />
+        <Route path='mentions-legales' element={<MentionsLegales />} />
+        <Route path='politique-confidentialite' element={<PolitiqueConfidentialite />} />
 
         <Route path='register' element={<Register />} />
         <Route path='login' element={<Login />} />
@@ -53,6 +61,7 @@ function App() {
         <Route path='reset-password/:token' element={<ResetPassword />} />
 
         <Route element={<PrivateRoute />}>
+          <Route path='devis' element={<Devis />} />
           <Route path='profil' element={<Profil />} />
         </Route>
 

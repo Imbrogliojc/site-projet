@@ -26,12 +26,12 @@ const Header = () => {
                     {/* Brand */}
                     <NavLink className="navbar-brand d-flex align-items-center gap-2" to="/">
                         <img
-                            src="/05-assets/Logo_factice-v1.jpg"
+                            src="/images/logo.svg"
                             alt="Logo"
-                            height="32"
+                            height="60"
                             className="d-inline-block align-text-top"
                         />
-                        <span className="brand-name">CMS Auto</span>
+                        {/* <span className="brand-name">CMS Auto</span> */}
                     </NavLink>
 
                     {/* Burger */}
@@ -48,12 +48,11 @@ const Header = () => {
 
                     {/* Links */}
                     <div className={`navbar-collapse ${isMenuOpen ? "show" : "collapse"}`} id="navbarNav">
-                        <ul className="navbar-nav main-nav-center align-items-lg-center">
 
-                            {/* C'est ici que je .map mon fichier header.js */}
+                        <ul className="navbar-nav ms-lg-auto align-items-lg-center gap-lg-2">
+
                             {HEADER_LINK.map((Link) => (
                                 <li className="nav-item" key={Link.label}>
-
                                     <NavLink
                                         to={Link.path}
                                         onClick={closeMenu}
@@ -63,23 +62,28 @@ const Header = () => {
                                     >
                                         {Link.label}
                                     </NavLink>
-
                                 </li>
                             ))}
-                        </ul>
 
-                        <ul className="navbar-nav ms-lg-auto align-items-lg-center">
                             {!currentUser ? (
                                 <>
-                                    <li className="nav-item">
-                                        <NavLink to="/login" onClick={closeMenu} className="nav-auth-link nav-auth-outline">
+                                    <li className="nav-item ms-lg-3">
+                                        <NavLink
+                                            to="/login"
+                                            onClick={closeMenu}
+                                            className="nav-auth-link nav-auth-outline"
+                                        >
                                             <i className="bi bi-box-arrow-in-right me-1"></i>
                                             Se connecter
                                         </NavLink>
                                     </li>
 
                                     <li className="nav-item">
-                                        <NavLink to="/register" onClick={closeMenu} className="nav-auth-link nav-auth-filled">
+                                        <NavLink
+                                            to="/register"
+                                            onClick={closeMenu}
+                                            className="nav-auth-link nav-auth-filled"
+                                        >
                                             <i className="bi bi-person-plus me-1"></i>
                                             Créer un compte
                                         </NavLink>
@@ -87,7 +91,7 @@ const Header = () => {
                                 </>
                             ) : (
                                 <>
-                                    <li className="nav-item d-flex align-items-center">
+                                    <li className="nav-item ms-lg-3 d-flex align-items-center">
                                         <span className="user-name-text">
                                             Bonjour {currentUser?.userName}
                                         </span>
@@ -108,26 +112,32 @@ const Header = () => {
                                     )}
 
                                     <li className="nav-item">
-                                        <NavLink to="/profil" onClick={closeMenu} className="profile-badge-link">
+                                        <NavLink
+                                            to="/profil"
+                                            onClick={closeMenu}
+                                            className="profile-badge-link"
+                                        >
                                             <i className="bi bi-person-circle me-1"></i>
                                             Mon profil
                                         </NavLink>
                                     </li>
 
-
                                     <li className="nav-item">
-                                        <button type="button"
+                                        <button
+                                            type="button"
                                             onClick={() => {
                                                 closeMenu()
                                                 logout()
                                             }}
-                                            className="nav-logout-button">
+                                            className="nav-logout-button"
+                                        >
                                             <i className="bi bi-box-arrow-right me-1"></i>
                                             Déconnexion
                                         </button>
                                     </li>
                                 </>
                             )}
+
                         </ul>
                     </div>
                 </div>

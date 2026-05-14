@@ -7,6 +7,8 @@ import { HEADER_LINK } from '../../config/navigation'
 import { NavLink } from 'react-router-dom'
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <>
       {/* Footer commun du site : logo, navigation rapide et informations de contact. */}
@@ -19,14 +21,14 @@ const Footer = () => {
             <div className="col-md-4 d-flex flex-column align-items-start">
               {/* Logo de l’entreprise */}
               <img
-                src="/05-assets/Logo_factice-v1.jpg"
+                src="/images/logo.svg"
                 alt="Logo de l’entreprise"
-                width="120"
+                height="60"
                 className="mb-2"
               />
 
               {/* Nom de l’entreprise */}
-              <h5 className="fw-bold mb-2">CMS Auto</h5>
+              {/* <h5 className="fw-bold mb-2">CMS Auto</h5> */}
               <p className="small text-light opacity-75 mb-0">
                 Spécialiste en rénovation et esthétique automobile.
               </p>
@@ -96,7 +98,27 @@ const Footer = () => {
           <hr className="border-secondary my-4" />
 
           <div className="text-center small text-light opacity-75">
-            © 2026 CMS Auto — Tous droits réservés.
+            <div className="mb-2 d-flex justify-content-center flex-wrap gap-3">
+              <NavLink to="/mentions-legales" className="text-light text-decoration-none">
+                Mentions légales
+              </NavLink>
+
+              <NavLink to="/politique-confidentialite" className="text-light text-decoration-none">
+                Politique de confidentialité
+              </NavLink>
+
+              <NavLink to="/cgu" className="text-light text-decoration-none">
+                CGU
+              </NavLink>
+
+              <NavLink to="/cgv" className="text-light text-decoration-none">
+                CGV
+              </NavLink>
+            </div>
+
+            <div>
+              © {currentYear} CMS Auto — Tous droits réservés.
+            </div>
           </div>
         </div>
       </footer>

@@ -16,6 +16,7 @@ const AdminDevis = () => {
     const [devis, setDevis] = useState([])
     const [editId, setEditId] = useState(null)
     const [services, setServices] = useState([])
+    const [reservations, setReservations] = useState([])
     const [editValues, setEditValues] = useState({
         prixTtc: "",
         dateIt: "",
@@ -26,6 +27,7 @@ const AdminDevis = () => {
     useEffect(() => {
         fetchDevis()
         fetchServices()
+        fetchReservations()
     }, [])
 
     const fetchDevis = async () => {
@@ -41,6 +43,15 @@ const AdminDevis = () => {
         try {
             const response = await axios.get(URL.SERVICES)
             setServices(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const fetchReservations = async () => {
+        try {
+            const response = await axios.get(URL.RESERVATIONS, { withCredentials: true })
+            setReservations(response.data)
         } catch (error) {
             console.log(error)
         }
@@ -91,7 +102,9 @@ const AdminDevis = () => {
                 { devis: devisId },
                 { withCredentials: true }
             )
-            console.log("Réservation créée !")
+
+            alert("Réservation créée avec succès !")
+            fetchReservations()
 
         } catch (error) {
             console.log(error.response.data)
@@ -150,176 +163,191 @@ const AdminDevis = () => {
                 </thead>
 
                 <tbody>
-                    {devisEnCours.map((d) => (
-                        <tr key={d._id}>
+                    {devisEnCours.map((d) => {
+                        const reservationExists = reservations.some(
+                            (reservation) => reservation.devis?._id === d._id
+                        )
 
-                            {/* 🔹 CLIENT */}
-                            <td>{d.member?.userName}</td>
+                        return (
+                            <tr key={d._id}>
 
-                            {/* 🔹 TYPE CLIENT */}
-                            <td>
-                                <span className="badge bg-light text-dark border">
-                                    {formatTypeClient(d.typeClient)}
-                                </span>
-                            </td>
+                                {/* 🔹 CLIENT */}
+                                <td>{d.member?.userName}</td>
 
-                            {/* 🔹 SERVICE */}
-                            <td>{d.service?.serviceName || "—"}</td>
+                                {/* 🔹 TYPE CLIENT */}
+                                <td>
+                                    <span className="badge bg-light text-dark border">
+                                        {formatTypeClient(d.typeClient)}
+                                    </span>
+                                </td>
 
-                            {/* 🔹 VEHICULE */}
-                            <td>
-                                {d.marqueVehicule} {d.modeleVehicule}
-                            </td>
+                                {/* 🔹 SERVICE */}
+                                <td>{d.service?.serviceName || "—"}</td>
 
-                            {/* 🔹 PHOTOS */}
-                            <td>
-                                {d.pieceJointe && d.pieceJointe.length > 0 ? (
-                                    <div className="d-flex flex-wrap gap-1">
-                                        {d.pieceJointe.map((img, index) => (
-                                            <img
-                                                key={index}
-                                                src={`http://localhost:8000${img}`}
-                                                alt="devis"
-                                                width="70"
-                                                style={{ cursor: "pointer" }}
-                                                onClick={() =>
-                                                    window.open(`http://localhost:8000${img}`, "_blank")
-                                                }
-                                            />
-                                        ))}
-                                    </div>
-                                ) : (
-                                    "—"
-                                )}
-                            </td>
+                                {/* 🔹 VEHICULE */}
+                                <td>
+                                    {d.marqueVehicule} {d.modeleVehicule}
+                                </td>
 
-                            {/* 🔹 REPONSE */}
-                            <td>
-                                {editId === d._id ? (
-                                    <div className="d-flex flex-column gap-2">
-
-                                        <select
-                                            className="form-select form-select-sm"
-                                            name="service"
-                                            value={editValues.service}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="">Choisir un service</option>
-                                            {services.map((s) => (
-                                                <option key={s._id} value={s._id}>
-                                                    {s.serviceName}
-                                                </option>
+                                {/* 🔹 PHOTOS */}
+                                <td>
+                                    {d.pieceJointe && d.pieceJointe.length > 0 ? (
+                                        <div className="d-flex flex-wrap gap-1">
+                                            {d.pieceJointe.map((img, index) => (
+                                                <img
+                                                    key={index}
+                                                    src={`http://localhost:8000${img}`}
+                                                    alt="devis"
+                                                    width="70"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() =>
+                                                        window.open(`http://localhost:8000${img}`, "_blank")
+                                                    }
+                                                />
                                             ))}
-                                        </select>
-
-                                        <input
-                                            className="form-control form-control-sm"
-                                            type="number"
-                                            name="prixTtc"
-                                            placeholder="Prix"
-                                            value={editValues.prixTtc}
-                                            onChange={handleChange}
-                                        />
-
-                                        <div className="d-flex gap-2">
-                                            <input
-                                                className="form-control form-control-sm"
-                                                type="date"
-                                                name="dateIt"
-                                                value={editValues.dateIt}
-                                                onChange={handleChange}
-                                            />
-
-                                            <input
-                                                className="form-control form-control-sm"
-                                                type="time"
-                                                name="heureIt"
-                                                value={editValues.heureIt}
-                                                onChange={handleChange}
-                                            />
                                         </div>
-
-                                    </div>
-                                ) : (
-                                    <div className="d-flex flex-column">
-                                        <span>{d.prixTtc ? `${d.prixTtc} €` : "—"}</span>
-
-                                        <span className="text-muted small">
-                                            <i className="bi bi-calendar-date"></i> {formatDate(d.dateIt)}
-                                        </span>
-
-                                        <span className="text-muted small">
-                                            <i className="bi bi-clock"></i> {d.heureIt || "—"}
-                                        </span>
-                                    </div>
-                                )}
-                            </td>
-
-                            {/* 🔹 ACTIONS */}
-                            <td>
-                                <div className="d-flex justify-content-center align-items-center gap-2">
-
-                                    {editId === d._id ? (
-                                        <button
-                                            className="btn btn-success btn-sm"
-                                            onClick={() => handleUpdate(d._id)}
-                                        >
-                                            <i className="bi bi-check"></i> Valider
-                                        </button>
                                     ) : (
-                                        <>
-                                            <button
-                                                className={`btn btn-sm ${d.status === "validated"
-                                                    ? "btn-primary"
-                                                    : "btn-warning"
-                                                    }`}
-                                                onClick={() => handleEdit(d)}
-                                            >
-                                                <i className="bi bi-pencil-square"></i>{" "}
-                                                {d.status === "validated" ? "Modifier" : "Traiter"}
-                                            </button>
-
-                                            {d.status === "validated" && (
-                                                <button
-                                                    className="btn btn-success btn-sm"
-                                                    onClick={() => handleCreateReservation(d._id)}
-                                                >
-                                                    <i className="bi bi-calendar-check"></i> Réservation
-                                                </button>
-                                            )}
-
-                                            {d.status === "validated" && (
-                                                <button
-                                                    className="btn btn-secondary btn-sm"
-                                                    onClick={() => handleArchive(d._id)}
-                                                >
-                                                    <i className="bi -bi-archive"></i>Archiver
-                                                </button>
-                                            )}
-
-                                            <button
-                                                className="btn btn-danger btn-sm"
-                                                onClick={() => handleDelete(d._id)}
-                                            >
-                                                <i className="bi bi-trash"></i> Supprimer
-                                            </button>
-                                        </>
+                                        "—"
                                     )}
+                                </td>
 
-                                </div>
-                            </td>
+                                {/* 🔹 REPONSE */}
+                                <td>
+                                    {editId === d._id ? (
+                                        <div className="d-flex flex-column gap-2">
 
-                            {/* 🔹 STATUS */}
-                            <td>
-                                {d.status === "validated" ? (
-                                    <span className="badge bg-success">Validé</span>
-                                ) : (
-                                    <span className="badge bg-warning text-dark">En attente</span>
-                                )}
-                            </td>
+                                            <select
+                                                className="form-select form-select-sm"
+                                                name="service"
+                                                value={editValues.service}
+                                                onChange={handleChange}
+                                            >
+                                                <option value="">Choisir un service</option>
+                                                {services.map((s) => (
+                                                    <option key={s._id} value={s._id}>
+                                                        {s.serviceName}
+                                                    </option>
+                                                ))}
+                                            </select>
 
-                        </tr>
-                    ))}
+                                            <input
+                                                className="form-control form-control-sm"
+                                                type="number"
+                                                name="prixTtc"
+                                                placeholder="Prix"
+                                                value={editValues.prixTtc}
+                                                onChange={handleChange}
+                                            />
+
+                                            <div className="d-flex gap-2">
+                                                <input
+                                                    className="form-control form-control-sm"
+                                                    type="date"
+                                                    name="dateIt"
+                                                    value={editValues.dateIt}
+                                                    onChange={handleChange}
+                                                />
+
+                                                <input
+                                                    className="form-control form-control-sm"
+                                                    type="time"
+                                                    name="heureIt"
+                                                    value={editValues.heureIt}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+
+                                        </div>
+                                    ) : (
+                                        <div className="d-flex flex-column">
+                                            <span>{d.prixTtc ? `${d.prixTtc} €` : "—"}</span>
+
+                                            <span className="text-muted small">
+                                                <i className="bi bi-calendar-date"></i> {formatDate(d.dateIt)}
+                                            </span>
+
+                                            <span className="text-muted small">
+                                                <i className="bi bi-clock"></i> {d.heureIt || "—"}
+                                            </span>
+                                        </div>
+                                    )}
+                                </td>
+
+                                {/* 🔹 ACTIONS */}
+                                <td>
+                                    <div className="d-flex justify-content-center align-items-center gap-2">
+
+                                        {editId === d._id ? (
+                                            <button
+                                                className="btn btn-success btn-sm"
+                                                onClick={() => handleUpdate(d._id)}
+                                            >
+                                                <i className="bi bi-check"></i> Valider
+                                            </button>
+                                        ) : (
+                                            <>
+                                                <button
+                                                    className={`btn btn-sm ${d.status === "validated"
+                                                        ? "btn-primary"
+                                                        : "btn-warning"
+                                                        }`}
+                                                    onClick={() => handleEdit(d)}
+                                                >
+                                                    <i className="bi bi-pencil-square"></i>{" "}
+                                                    {d.status === "validated" ? "Modifier" : "Traiter"}
+                                                </button>
+
+                                                {d.status === "validated" && (
+                                                    reservationExists ? (
+                                                        <button
+                                                            className="btn btn-success btn-sm"
+                                                            disabled
+                                                        >
+                                                            <i className="bi bi-check-circle"></i> Réservé
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            className="btn btn-warning btn-sm"
+                                                            onClick={() => handleCreateReservation(d._id)}
+                                                        >
+                                                            <i className="bi bi-calendar-plus"></i> Créer réservation
+                                                        </button>
+                                                    )
+                                                )}
+
+                                                {d.status === "validated" && (
+                                                    <button
+                                                        className="btn btn-secondary btn-sm"
+                                                        onClick={() => handleArchive(d._id)}
+                                                    >
+                                                        <i className="bi -bi-archive"></i>Archiver
+                                                    </button>
+                                                )}
+
+                                                <button
+                                                    className="btn btn-danger btn-sm"
+                                                    onClick={() => handleDelete(d._id)}
+                                                >
+                                                    <i className="bi bi-trash"></i> Supprimer
+                                                </button>
+                                            </>
+                                        )}
+
+                                    </div>
+                                </td>
+
+                                {/* 🔹 STATUS */}
+                                <td>
+                                    {d.status === "validated" ? (
+                                        <span className="badge bg-success">Validé</span>
+                                    ) : (
+                                        <span className="badge bg-warning text-dark">En attente</span>
+                                    )}
+                                </td>
+
+                            </tr>
+                        )
+                    })}
                 </tbody>
             </table>
             <h3>Devis archivés</h3>
