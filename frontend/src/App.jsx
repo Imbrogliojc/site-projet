@@ -26,6 +26,7 @@ import CGU from './pages/Publiques/CGU.jsx'
 import CGV from './pages/Publiques/CGV.jsx'
 import MentionsLegales from './pages/Publiques/MentionsLegales.jsx'
 import PolitiqueConfidentialite from './pages/Publiques/PolitiqueConfidentialite.jsx'
+import NotFound from './pages/NotFound/NotFound.jsx'
 import Register from './pages/Auth/Register'
 import Login from './pages/Auth/Login'
 import ForgotPassword from './pages/Auth/ForgotPassword.jsx'
@@ -78,6 +79,8 @@ function App() {
           <Route path="users" element={<AdminUsers />} />
         </Route>
       </Route>
+
+      <Route path="*" element={<NotFound />} />
 
     </Routes>
   )
