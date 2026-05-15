@@ -136,6 +136,22 @@ const Profil = () => {
     }
   }
 
+  const handleDeleteAddress = async (id) => {
+    const confirmDelete = window.confirm("Supprimer cette adresse ?")
+    if (!confirmDelete) return
+
+    try {
+      await axios.delete(`${URL.ADDRESS}/delete/${id}`, {
+        withCredentials: true
+      })
+
+      fetchAddress()
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   // Partie password
 
   const handleUpdatePassword = async () => {
@@ -245,29 +261,95 @@ const Profil = () => {
       </div>
 
       {/* ==================== */}
-      {/* MON ADRESSE */}
+      {/* MES ADRESSES */}
       {/* ==================== */}
       <div className="card mb-4">
         <div className="card-body">
 
-          <h4 className="card-title mb-3">Mon adresse</h4>
+          <h4 className="card-title mb-3">Mes adresses</h4>
 
-          {addresses.length === 0 ? (
-            <>
-              <p>Aucune adresse enregistrée</p>
+          <button
+            className="btn btn-primary mb-3"
+            onClick={() => {
+              setEditId("new")
+              setEditValues({
+                rue: "",
+                codePostal: "",
+                ville: "",
+                numeroTelephone: ""
+              })
+            }}
+          >
+            Ajouter une adresse
+          </button>
+
+          {/* FORMULAIRE CREATION */}
+          {editId === "new" && (
+            <div className="mb-3 border rounded p-3">
+              <input
+                className="form-control mb-2"
+                placeholder="Rue"
+                value={editValues.rue}
+                onChange={(e) =>
+                  setEditValues(prev => ({ ...prev, rue: e.target.value }))
+                }
+              />
+
+              <input
+                className="form-control mb-2"
+                placeholder="Code postal"
+                value={editValues.codePostal}
+                onChange={(e) =>
+                  setEditValues(prev => ({ ...prev, codePostal: e.target.value }))
+                }
+              />
+
+              <input
+                className="form-control mb-2"
+                placeholder="Ville"
+                value={editValues.ville}
+                onChange={(e) =>
+                  setEditValues(prev => ({ ...prev, ville: e.target.value }))
+                }
+              />
+
+              <input
+                className="form-control mb-3"
+                placeholder="Téléphone"
+                value={editValues.numeroTelephone}
+                onChange={(e) =>
+                  setEditValues(prev => ({ ...prev, numeroTelephone: e.target.value }))
+                }
+              />
 
               <button
-                className="btn btn-primary mb-3"
-                onClick={() => setEditId("new")}
+                className="btn btn-success me-2"
+                onClick={handleCreateAddress}
               >
-                Ajouter une adresse
+                Créer
               </button>
 
-              {editId === "new" && (
+              <button
+                className="btn btn-secondary"
+                onClick={() => setEditId(null)}
+              >
+                Annuler
+              </button>
+            </div>
+          )}
+
+          {addresses.length === 0 && (
+            <p>Aucune adresse enregistrée</p>
+          )}
+
+          {/* LISTE DES ADRESSES */}
+          {addresses.map((addr) => (
+            <div key={addr._id} className="mb-3 border-top pt-3">
+
+              {editId === addr._id ? (
                 <>
                   <input
                     className="form-control mb-2"
-                    placeholder="Rue"
                     value={editValues.rue}
                     onChange={(e) =>
                       setEditValues(prev => ({ ...prev, rue: e.target.value }))
@@ -276,7 +358,6 @@ const Profil = () => {
 
                   <input
                     className="form-control mb-2"
-                    placeholder="Code postal"
                     value={editValues.codePostal}
                     onChange={(e) =>
                       setEditValues(prev => ({ ...prev, codePostal: e.target.value }))
@@ -285,7 +366,6 @@ const Profil = () => {
 
                   <input
                     className="form-control mb-2"
-                    placeholder="Ville"
                     value={editValues.ville}
                     onChange={(e) =>
                       setEditValues(prev => ({ ...prev, ville: e.target.value }))
@@ -294,7 +374,6 @@ const Profil = () => {
 
                   <input
                     className="form-control mb-3"
-                    placeholder="Téléphone"
                     value={editValues.numeroTelephone}
                     onChange={(e) =>
                       setEditValues(prev => ({ ...prev, numeroTelephone: e.target.value }))
@@ -302,92 +381,51 @@ const Profil = () => {
                   />
 
                   <button
-                    className="btn btn-success"
-                    onClick={handleCreateAddress}
+                    className="btn btn-success me-2"
+                    onClick={() => handleUpdateAddress(addr._id)}
                   >
-                    Créer
+                    Valider
+                  </button>
+
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => setEditId(null)}
+                  >
+                    Annuler
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p className="mb-1">{addr.rue}</p>
+                  <p className="mb-1">{addr.codePostal} {addr.ville}</p>
+                  <p className="mb-2">{addr.numeroTelephone}</p>
+
+                  <button
+                    className="btn btn-primary btn-sm me-2"
+                    onClick={() => {
+                      setEditId(addr._id)
+                      setEditValues({
+                        rue: addr.rue,
+                        codePostal: addr.codePostal,
+                        ville: addr.ville,
+                        numeroTelephone: addr.numeroTelephone
+                      })
+                    }}
+                  >
+                    Modifier
+                  </button>
+
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDeleteAddress(addr._id)}
+                  >
+                    Supprimer
                   </button>
                 </>
               )}
-            </>
-          ) : (
-            addresses.map((addr) => (
-              <div key={addr._id} className="mb-3">
 
-                {editId === addr._id ? (
-                  <>
-                    <input
-                      className="form-control mb-2"
-                      value={editValues.rue}
-                      onChange={(e) =>
-                        setEditValues(prev => ({ ...prev, rue: e.target.value }))
-                      }
-                    />
-
-                    <input
-                      className="form-control mb-2"
-                      value={editValues.codePostal}
-                      onChange={(e) =>
-                        setEditValues(prev => ({ ...prev, codePostal: e.target.value }))
-                      }
-                    />
-
-                    <input
-                      className="form-control mb-2"
-                      value={editValues.ville}
-                      onChange={(e) =>
-                        setEditValues(prev => ({ ...prev, ville: e.target.value }))
-                      }
-                    />
-
-                    <input
-                      className="form-control mb-3"
-                      value={editValues.numeroTelephone}
-                      onChange={(e) =>
-                        setEditValues(prev => ({ ...prev, numeroTelephone: e.target.value }))
-                      }
-                    />
-
-                    <button
-                      className="btn btn-success me-2"
-                      onClick={() => handleUpdateAddress(addr._id)}
-                    >
-                      Valider
-                    </button>
-
-                    <button
-                      className="btn btn-secondary"
-                      onClick={() => setEditId(null)}
-                    >
-                      Annuler
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <p className="mb-1">{addr.rue}</p>
-                    <p className="mb-1">{addr.codePostal} {addr.ville}</p>
-                    <p className="mb-2">{addr.numeroTelephone}</p>
-
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={() => {
-                        setEditId(addr._id)
-                        setEditValues({
-                          rue: addr.rue,
-                          codePostal: addr.codePostal,
-                          ville: addr.ville,
-                          numeroTelephone: addr.numeroTelephone
-                        })
-                      }}
-                    >
-                      Modifier
-                    </button>
-                  </>
-                )}
-
-              </div>
-            ))
-          )}
+            </div>
+          ))}
 
         </div>
       </div>
@@ -521,7 +559,7 @@ const Profil = () => {
         </div>
       </div>
 
-    </div>
+    </div >
   );
 };
 
