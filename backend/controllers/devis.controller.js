@@ -8,6 +8,8 @@
 import Devis from "../models/devis.model.js";
 import fs from "fs";
 import path from "path";
+import { sendMail } from "../services/mailer.js";
+import { newDevisAdminTemplate } from "../services/templates/emailTemplates.js";
 
 // ====================
 // CREATE DEVIS (USER)
@@ -29,6 +31,16 @@ export const createDevis = async (req, res) => {
         });
 
         const savedDevis = await newDevis.save();
+
+        // Envoi d'une notification email à l'administrateur
+        // Objectif : signaler qu'une nouvelle demande de devis a été créée
+        // À commenter si besoin pendant les tests pour éviter les envois Mailtrap inutiles
+        // await sendMail(
+        //     "contact@monentreprise.com",
+        //     "Nouvelle demande de devis CMS Auto",
+        //     newDevisAdminTemplate()
+        // );
+
         res.status(201).json(savedDevis);
 
     } catch (error) {

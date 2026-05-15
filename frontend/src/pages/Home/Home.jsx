@@ -6,12 +6,7 @@ const Home = () => {
     <div>
 
       {/* 🔹 HERO */}
-      <Carousel
-        variant="home"
-        title="Votre spécialiste automobile"
-        description="Achat, rénovation et personnalisation de véhicules"
-        image="https://placehold.co/1200x400"
-      />
+      <Carousel variant="home" />
 
       <div className="container my-5">
 
@@ -19,45 +14,63 @@ const Home = () => {
         <section className="text-center mb-5">
           <h2 className="mb-3">À propos de nous</h2>
           <p className="lead">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Nous accompagnons nos clients dans leurs projets automobiles
-            avec expertise et passion.
+            Nous accompagnons nos clients dans l’achat, la remise en état
+            et la valorisation de véhicules d’occasion. Notre objectif est de proposer
+            des solutions adaptées, avec un suivi clair et un travail soigné.
           </p>
         </section>
 
         {/* 🔹 BLOC 1 */}
-        <section className="row align-items-center mb-5">
-          <div className="col-md-6">
-            <h3>Un savoir-faire reconnu</h3>
-            <p>
-              Carrosserie, peinture et rénovation intérieure.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </p>
-          </div>
-          <div className="col-md-6">
-            <img 
-              src="https://placehold.co/600x400"
-              alt=""
-              className="img-fluid rounded shadow"
-            />
+        <section className="mb-5">
+          <div className="card card-orange-outline rounded-4 overflow-hidden">
+            <div className="row g-0 align-items-center">
+
+              <div className="col-12 col-lg-6 order-2 order-lg-1">
+                <div className="card-body p-4">
+                  <h3>Un savoir-faire automobile</h3>
+                  <p className="text-muted mb-0 horizontal-card-text">
+                    De la carrosserie à la peinture, nous intervenons sur différents besoins
+                    afin de redonner de la valeur et du caractère à chaque véhicule.
+                  </p>
+                </div>
+              </div>
+
+              <div className="col-12 col-lg-6 order-1 order-lg-2">
+                <img
+                  src="/images/home/savoirFaireAdapte.webp"
+                  alt="Un savoir-faire automobile"
+                  className="img-fluid h-100 w-100 object-fit-cover"
+                />
+              </div>
+
+            </div>
           </div>
         </section>
 
         {/* 🔹 BLOC 2 */}
-        <section className="row align-items-center mb-5">
-          <div className="col-md-6 order-md-2">
-            <h3>Des prestations sur mesure</h3>
-            <p>
-              Adaptées à chaque véhicule et chaque client.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </p>
-          </div>
-          <div className="col-md-6 order-md-1">
-            <img 
-              src="https://placehold.co/600x400"
-              alt=""
-              className="img-fluid rounded shadow"
-            />
+        <section className="mb-5">
+          <div className="card card-orange-outline rounded-4 overflow-hidden">
+            <div className="row g-0 align-items-center">
+
+              <div className="col-12 col-lg-6 order-2 order-lg-2">
+                <div className="card-body p-4">
+                  <h3>Des prestations sur mesure</h3>
+                  <p className="text-muted mb-0 horizontal-card-text">
+                    Chaque projet est étudié selon l’état du véhicule, les attentes du client
+                    et le niveau d’intervention souhaité.
+                  </p>
+                </div>
+              </div>
+
+              <div className="col-12 col-lg-6 order-1 order-lg-1">
+                <img
+                  src="/images/home/prestationSurMesure.webp"
+                  alt="Des prestations sur mesure"
+                  className="img-fluid h-100 w-100 object-fit-cover"
+                />
+              </div>
+
+            </div>
           </div>
         </section>
 

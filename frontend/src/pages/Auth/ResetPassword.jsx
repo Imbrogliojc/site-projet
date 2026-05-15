@@ -1,50 +1,139 @@
-import React from 'react';
-import axios from 'axios';
-import URL from '../../config/api.js'
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import axios from "axios";
+import URL from "../../config/api.js";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
     const { token } = useParams();
     const navigate = useNavigate();
 
-    const [password, setPassword] = useState("");
+    const [passwordValues, setPasswordValues] = useState({
+        password: "",
+        confirmPassword: ""
+    });
+
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+
+        setPasswordValues((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (!password) return;
+        if (!passwordValues.password || !passwordValues.confirmPassword) {
+            setErrorMessage("Veuillez remplir les deux champs.");
+            return;
+        }
+
+        if (passwordValues.password !== passwordValues.confirmPassword) {
+            setErrorMessage("Les mots de passe ne correspondent pas.");
+            return;
+        }
 
         try {
             const response = await axios.post(
                 `${URL.USER}/resetPassword/${token}`,
-                { password }
+                { password: passwordValues.password }
             );
 
             console.log("Password reset :", response.data);
+
+            setErrorMessage("");
             toast.success("Mot de passe modifié !");
-            navigate('/login');
+            navigate("/login");
 
         } catch (error) {
-            console.log("Erreur :", error)
-            toast.error("Erreur lors du reset !")
+            console.log("Erreur :", error);
+            setErrorMessage("Le lien est invalide ou expiré.");
+            toast.error("Erreur lors du reset !");
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} >
-            <div>
-                <label>Nouveau mot de passe</label>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                />
-            </div>
-            <button type="submit">Réinitialiser</button>
-        </form>
-    )
-}
+        <main className="container py-5">
+            <div className="row justify-content-center">
+                <div className="col-md-8 col-lg-5">
+                    <div className="card card-orange-outline rounded-4">
+                        <div className="card-body p-4 p-md-5">
+                            <div className="text-center mb-4">
+                                <h1 className="h3 fw-bold">Nouveau mot de passe</h1>
 
-export default ResetPassword
+                                <p className="text-muted mb-0">
+                                    Choisissez un nouveau mot de passe pour sécuriser votre compte.
+                                </p>
+                            </div>
+
+                            {errorMessage && (
+                                <div className="alert alert-danger py-2" role="alert">
+                                    {errorMessage}
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-3">
+                                    <label htmlFor="password" className="form-label">
+                                        Nouveau mot de passe
+                                    </label>
+
+                                    <input
+                                        id="password"
+                                        type="password"
+                                        name="password"
+                                        className="form-control"
+                                        placeholder="Votre nouveau mot de passe"
+                                        value={passwordValues.password}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="confirmPassword" className="form-label">
+                                        Confirmer le nouveau mot de passe
+                                    </label>
+
+                                    <input
+                                        id="confirmPassword"
+                                        type="password"
+                                        name="confirmPassword"
+                                        className="form-control"
+                                        placeholder="Confirmez votre mot de passe"
+                                        value={passwordValues.confirmPassword}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="btn btn-warning w-100 fw-semibold mt-2"
+                                >
+                                    Réinitialiser le mot de passe
+                                </button>
+                            </form>
+
+                            <hr className="my-4" />
+
+                            <div className="text-center small">
+                                <p className="mb-1">
+                                    Vous vous souvenez de votre mot de passe ?
+                                </p>
+
+                                <Link to="/login" className="fw-semibold text-decoration-none">
+                                    Se connecter
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    );
+};
+
+export default ResetPassword;

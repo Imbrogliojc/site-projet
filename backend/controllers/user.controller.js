@@ -13,6 +13,7 @@ import { env } from '../config/index.js';
 // Import spécifique vérification Email & Reset Password
 import crypto from "crypto";
 import { sendMail } from '../services/mailer.js';
+import { verifyEmailTemplate, resetPasswordTemplate } from "../services/templates/emailTemplates.js";
 
 // ====================
 // VERIFY EMAIL
@@ -64,8 +65,8 @@ export const forgotPassword = async (req, res) => {
         // Envoi Email
         await sendMail(
             user.email,
-            "Reset password !",
-            ` <p> Cliquez ici pour réinitialiser votre mot de passe : ${resetUrl} </p> `
+            "Réinitialisation de votre mot de passe CMS Auto",
+            resetPasswordTemplate(resetUrl)
         )
 
         res.status(200).json("Email sent !")
@@ -128,12 +129,12 @@ export const signup = async (req, res) => {
         await User.create({ ...req.body, password: hashedPassword, verificationToken });
 
         // Envoi email de vérification
+        const verificationUrl = `http://localhost:5173/verify?token=${verificationToken}`;
+
         await sendMail(
             req.body.email,
-            "Vérification email",
-            `<a href="http://localhost:5173/verify?token=${verificationToken}">
-              Vérifier mon email
-            </a>`
+            "Vérification de votre compte CMS Auto",
+            verifyEmailTemplate(verificationUrl)
         )
 
         res.status(201).json('User has been created !')

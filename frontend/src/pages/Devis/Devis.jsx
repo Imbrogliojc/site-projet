@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../../utils/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
@@ -17,6 +17,10 @@ const Devis = () => {
     service: "",
     img: []
   })
+
+  const [success, setSuccess] = useState(false)
+
+  const fileInputRef = useRef(null)
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -74,6 +78,19 @@ const Devis = () => {
         }
       )
       console.log("Devis créé :", response.data)
+      setSuccess(true)
+
+      setDevis({
+        typeClient: "",
+        marqueVehicule: "",
+        modeleVehicule: "",
+        service: "",
+        img: []
+      })
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""
+      }
 
     } catch (error) {
       console.log("Erreur devis :", error)
@@ -81,78 +98,128 @@ const Devis = () => {
   }
 
   return (
-    <div>
-      <h1>Demande de devis</h1>
+    <div className="container py-5">
 
-      <form onSubmit={handleSubmit}>
+      {/* HEADER */}
+      <div className="text-center mb-5">
+        <h1>Demande de devis</h1>
+        <p className="text-muted">
+          Présentez votre véhicule et le service souhaité afin d’obtenir une première estimation adaptée à votre besoin.
+        </p>
+      </div>
 
-        <div>
-          <label>Type de client</label>
-          <select name="typeClient" onChange={handleChange}>
-            <option value="">-- Choisir --</option>
-            <option value="particulier">Particulier</option>
-            <option value="pro">Professionnel</option>
-          </select>
-        </div>
+      <div className="row justify-content-center">
+        <div className="col-lg-8">
+          <div className="card shadow-sm p-4">
 
-        <div>
-          <label>Marque véhicule</label>
-          <input
-            type="text"
-            name="marqueVehicule"
-            onChange={handleChange}
-          />
-        </div>
+            <h3 className="mb-3">Votre projet automobile</h3>
 
-        <div>
-          <label>Modèle véhicule</label>
-          <input
-            type="text"
-            name="modeleVehicule"
-            onChange={handleChange}
-          />
-        </div>
+            <p className="text-muted mb-4">
+              Après l’envoi de votre demande, celle-ci sera étudiée afin de vous proposer une réponse adaptée.
+              Vous pourrez suivre son avancement depuis votre espace <strong>Mon profil</strong>.
+            </p>
 
-        <div>
-          <label>Service</label>
-          <select name="service" onChange={handleChange}>
-            <option value="">-- Choisir --</option>
-            {services.map(service => (
-              <option key={service._id} value={service._id}>
-                {service.serviceName}
-              </option>
-            ))}
-          </select>
-        </div>
+            {success && (
+              <div className="alert alert-success">
+                Votre demande de devis a bien été envoyée. Elle sera étudiée prochainement et vous pourrez suivre son avancement depuis votre espace Mon profil.
+              </div>
+            )}
 
-        <div>
-          <label>Photos du véhicule</label>
-          <input
-            type="file"
-            name="img"
-            multiple
-            onChange={handleChange}
-          />
+            <form onSubmit={handleSubmit}>
 
-          {devis.img.length > 0 && (
-            <div style={{ display: "flex", gap: "10px", marginTop:"10px" }} >
-              {devis.img.map((file, index) => (
-                <img
-                  key={index}
-                  src={window.URL.createObjectURL(file)}
-                  alt="preview"
-                  width="100"
+              <div className="mb-3">
+                <label className="form-label">Type de client</label>
+                <select
+                  className="form-select"
+                  name="typeClient"
+                  value={devis.typeClient}
+                  onChange={handleChange}
+                >
+                  <option value="">-- Choisir --</option>
+                  <option value="particulier">Particulier</option>
+                  <option value="pro">Professionnel</option>
+                </select>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Marque du véhicule</label>
+                <input
+                  type="text"
+                  name="marqueVehicule"
+                  className="form-control"
+                  value={devis.marqueVehicule}
+                  onChange={handleChange}
                 />
-              ))}
-            </div>
-          )}
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Modèle du véhicule</label>
+                <input
+                  type="text"
+                  name="modeleVehicule"
+                  className="form-control"
+                  value={devis.modeleVehicule}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Service souhaité</label>
+                <select
+                  className="form-select"
+                  name="service"
+                  value={devis.service}
+                  onChange={handleChange}
+                >
+                  <option value="">-- Choisir un service --</option>
+                  {services.map(service => (
+                    <option key={service._id} value={service._id}>
+                      {service.serviceName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-4">
+                <label className="form-label">Photos du véhicule</label>
+                <input
+                  type="file"
+                  name="img"
+                  className="form-control"
+                  multiple
+                  ref={fileInputRef}
+                  onChange={handleChange}
+                />
+
+                <div className="form-text">
+                  Vous pouvez ajouter jusqu’à 5 photos afin de faciliter l’analyse de votre demande.
+                </div>
+
+                {devis.img.length > 0 && (
+                  <div className="d-flex flex-wrap gap-2 mt-3">
+                    {devis.img.map((file, index) => (
+                      <img
+                        key={index}
+                        src={window.URL.createObjectURL(file)}
+                        alt="preview"
+                        width="100"
+                        className="rounded border"
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <button type="submit" className="btn btn-warning w-100 fw-semibold">
+                <i className="bi bi-send me-1"></i>
+                Envoyer la demande
+              </button>
+
+            </form>
+
+          </div>
         </div>
-
-        <button type="submit">
-          Envoyer la demande
-        </button>
-
-      </form>
+      </div>
     </div>
   )
 }

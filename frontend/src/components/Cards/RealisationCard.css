@@ -1,12 +1,4 @@
-/* .realisation-card--vertical {
-
+.realisation-card-img {
+  height: 220px;
+  object-fit: cover;
 }
-.realisation-card--vertical-compact {
-
-}
-.realisation-card--horizontal-text-left {
-
-}
-.realisation-card--horizontal-text-right {
-
-} */

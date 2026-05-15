@@ -4,9 +4,14 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 import URL from '../../config/api.js';
 
+const formatDate = (date) => {
+  if (!date) return "-"
+  return new Date(date).toLocaleDateString("fr-FR")
+}
+
 const Profil = () => {
 
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser, logout } = useContext(AuthContext)
   const navigate = useNavigate()
 
   const [myDevis, setMyDevis] = useState([])
@@ -161,8 +166,7 @@ const Profil = () => {
         withCredentials: true
       })
 
-      localStorage.removeItem("auth")
-      navigate('/')
+      logout()
 
     } catch (error) {
       console.log(error)
@@ -447,9 +451,7 @@ const Profil = () => {
                       {reservation ? (
                         <>
                           <strong>Date :</strong>{" "}
-                          {reservation.devis?.dateIt
-                            ? new Date(reservation.devis.dateIt).toLocaleDateString()
-                            : "—"}
+                          {formatDate(reservation.devis?.dateIt)}
                           <br />
                           <strong>Heure :</strong>{" "}
                           {reservation.devis?.heureIt || "—"}

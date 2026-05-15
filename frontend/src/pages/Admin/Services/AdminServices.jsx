@@ -93,7 +93,6 @@ const AdminServices = () => {
             <table className="table table-striped table-hover align-middle">
                 <thead className="table-dark">
                     <tr>
-                        <th>ID</th>
                         <th>Nom du service</th>
                         <th>Actions</th>
                     </tr>
@@ -102,8 +101,6 @@ const AdminServices = () => {
                 <tbody>
                     {services.map(service => (
                         <tr key={service._id}>
-
-                            <td>{service._id}</td>
 
                             <td>
                                 {editId === service._id ? (
