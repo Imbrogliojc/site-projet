@@ -25,7 +25,11 @@ export const createDevis = async (req, res) => {
 
         // Association automatique avec le user (req.user.id)
         const newDevis = new Devis({
-            ...req.body,
+            typeClient: req.body.typeClient,
+            marqueVehicule: req.body.marqueVehicule,
+            modeleVehicule: req.body.modeleVehicule,
+            service: req.body.service,
+            address: req.body.address,
             pieceJointe: imagePaths,
             member: req.user.id
         });
@@ -60,7 +64,8 @@ export const getDevis = async (req, res) => {
     try {
         const devis = await Devis.find()
             .populate("member", "-password")
-            .populate("service");
+            .populate("service")
+            .populate("address");
         res.status(200).json(devis);
 
     } catch (error) {
@@ -80,6 +85,7 @@ export const getDevisById = async (req, res) => {
         const devis = await Devis.findById(req.params.id)
             .populate("member", "-password")
             .populate("service")
+            .populate("address")
         if (!devis) return res.status(404).json("Devis not found !")
         res.status(200).json(devis);
 
@@ -150,6 +156,7 @@ export const getMyDevis = async (req, res) => {
         // Utilisation du middleware verifieToken (req.user.id)
         const devis = await Devis.find({ member: req.user.id })
             .populate("service")
+            .populate("address")
         res.status(200).json(devis)
 
     } catch (error) {

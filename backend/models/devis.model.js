@@ -12,6 +12,11 @@ const devisSchema = mongoose.Schema(
             ref: "service",
             required: true
         },
+        address: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "address",
+            required: true
+        },
         typeClient: {
             type: String,
             required: true

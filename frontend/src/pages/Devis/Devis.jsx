@@ -10,11 +10,20 @@ const Devis = () => {
   const navigate = useNavigate()
 
   const [services, setServices] = useState([])
+  const [addresses, setAddresses] = useState([])
+  const [addressValues, setAddressValues] = useState({
+    rue: "",
+    codePostal: "",
+    ville: "",
+    numeroTelephone: ""
+  })
+  const [showAddressForm, setShowAddressForm] = useState(false)
   const [devis, setDevis] = useState({
     typeClient: "",
     marqueVehicule: "",
     modeleVehicule: "",
     service: "",
+    address: "",
     img: []
   })
 
@@ -34,7 +43,45 @@ const Devis = () => {
       }
     }
     fetchServices()
+    if (currentUser) {
+      fetchAddress()
+    }
   }, [])
+
+  const fetchAddress = async () => {
+    try {
+      const response = await axios.get(`${URL.ADDRESS}/profile`, {
+        withCredentials: true
+      })
+
+      console.log("Adresses récupérées :", response.data)
+      setAddresses(response.data)
+
+    } catch (error) {
+      console.log("Erreur récupération d'adresses :", error)
+    }
+  }
+
+  const handleCreateAddress = async () => {
+    try {
+      const response = await axios.post(`${URL.ADDRESS}/create`, addressValues, { withCredentials: true })
+      setAddressValues({
+        rue: "",
+        codePostal: "",
+        ville: "",
+        numeroTelephone: ""
+      })
+      setShowAddressForm(false)
+      await fetchAddress()
+      setDevis(prev => ({
+        ...prev,
+        address: response.data._id
+      }))
+
+    } catch (error) {
+      console.log("Erreur création d'adresse :", error)
+    }
+  }
 
   const handleChange = (event) => {
     const { name, value, files } = event.target
@@ -51,6 +98,10 @@ const Devis = () => {
       navigate('/login')
       return
     }
+    if (!devis.address) {
+      alert("Veuillez sélectionner ou ajouter une adresse de facturation.")
+      return
+    }
 
     // CREATION : objet FormData pour envoyer des données multipart/form-data. Permet l'envoi de fichiers et de données textuelles
     const formData = new FormData()
@@ -60,6 +111,7 @@ const Devis = () => {
     formData.append("marqueVehicule", devis.marqueVehicule)
     formData.append("modeleVehicule", devis.modeleVehicule)
     formData.append("service", devis.service)
+    formData.append("address", devis.address)
 
     // IMAGES : parcours du tableau d'images et ajout de chaque image dans FormData. Le nom "img" doit correspondre au champs
     devis.img.forEach((file) => {
@@ -85,6 +137,7 @@ const Devis = () => {
         marqueVehicule: "",
         modeleVehicule: "",
         service: "",
+        address: "",
         img: []
       })
 
@@ -178,6 +231,87 @@ const Devis = () => {
                     </option>
                   ))}
                 </select>
+              </div>
+
+              <div className="mb-4">
+                <label className="form-label">Adresse de facturation</label>
+
+                {addresses.length > 0 ? (
+                  <select
+                    className="form-select mb-2"
+                    name="address"
+                    value={devis.address}
+                    onChange={handleChange}
+                  >
+                    <option value="">-- Choisir une adresse --</option>
+
+                    {addresses.map((addr) => (
+                      <option key={addr._id} value={addr._id}>
+                        {addr.rue} - {addr.codePostal} {addr.ville}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <p className="text-muted">
+                    Aucune adresse enregistrée. Vous pouvez en ajouter une directement avant d’envoyer votre demande.
+                  </p>
+                )}
+
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-sm mb-3"
+                  onClick={() => setShowAddressForm(!showAddressForm)}
+                >
+                  {showAddressForm ? "Annuler l’ajout" : "Ajouter une adresse"}
+                </button>
+
+                {showAddressForm && (
+                  <div className="border rounded p-3 mb-3">
+                    <input
+                      className="form-control mb-2"
+                      placeholder="Rue"
+                      value={addressValues.rue}
+                      onChange={(e) =>
+                        setAddressValues(prev => ({ ...prev, rue: e.target.value }))
+                      }
+                    />
+
+                    <input
+                      className="form-control mb-2"
+                      placeholder="Code postal"
+                      value={addressValues.codePostal}
+                      onChange={(e) =>
+                        setAddressValues(prev => ({ ...prev, codePostal: e.target.value }))
+                      }
+                    />
+
+                    <input
+                      className="form-control mb-2"
+                      placeholder="Ville"
+                      value={addressValues.ville}
+                      onChange={(e) =>
+                        setAddressValues(prev => ({ ...prev, ville: e.target.value }))
+                      }
+                    />
+
+                    <input
+                      className="form-control mb-3"
+                      placeholder="Téléphone"
+                      value={addressValues.numeroTelephone}
+                      onChange={(e) =>
+                        setAddressValues(prev => ({ ...prev, numeroTelephone: e.target.value }))
+                      }
+                    />
+
+                    <button
+                      type="button"
+                      className="btn btn-success btn-sm"
+                      onClick={handleCreateAddress}
+                    >
+                      Enregistrer cette adresse
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="mb-4">

@@ -123,7 +123,7 @@ const Profil = () => {
 
   const handleUpdateAddress = async (id) => {
     try {
-      await axios.put(`${URL.ADDRESS}/update/${id}`,
+      await axios.put(`${URL.ADDRESS}/profile/${id}`,
         editValues,
         { withCredentials: true }
       )
@@ -141,7 +141,7 @@ const Profil = () => {
     if (!confirmDelete) return
 
     try {
-      await axios.delete(`${URL.ADDRESS}/delete/${id}`, {
+      await axios.delete(`${URL.ADDRESS}/profile/${id}`, {
         withCredentials: true
       })
 

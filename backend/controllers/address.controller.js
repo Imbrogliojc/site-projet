@@ -8,6 +8,13 @@
 import Address from "../models/address.model.js";
 
 // ====================
+// USER ADDRESS
+// ====================
+
+// Fonctions utilisées depuis la page Profil.
+// L'utilisateur connecté agit uniquement sur ses propres adresses grâce à req.user.id.
+
+// ====================
 // CREATE ADDRESS (USER)
 // ====================
 
@@ -21,23 +28,6 @@ export const createAddress = async (req, res) => {
             member: req.user.id
         })
         res.status(201).json(address);
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
-    }
-};
-
-// ====================
-// GET ALL ADDRESSES (ADMIN)
-// ====================
-
-// Récupération de toutes les adresses, utilisé côté admin
-
-export const getAddresses = async (req, res) => {
-    try {
-        const addresses = await Address.find().populate("member", "-password")
-        res.status(200).json(addresses);
 
     } catch (error) {
         console.log(error)
@@ -64,7 +54,92 @@ export const getMyAddress = async (req, res) => {
 };
 
 // ====================
-// GET ADDRESS BY ID
+// UPDATE MY ADDRESS (USER)
+// ====================
+
+// Permet à l'utilisateur connecté de modifier une de ses propres adresses.
+// On vérifie d'abord que l'adresse existe et qu'elle appartient bien au user connecté.
+
+export const updateMyAddress = async (req, res) => {
+    try {
+        const address = await Address.findOne({
+            _id: req.params.id,
+            member: req.user.id
+        })
+        if (!address) {
+            return res.status(404).json("Address not found or not allowed !")
+        }
+        const updatedAddress = await Address.findByIdAndUpdate(
+            req.params.id,
+            {
+                $set: {
+                    rue: req.body.rue,
+                    codePostal: req.body.codePostal,
+                    ville: req.body.ville,
+                    numeroTelephone: req.body.numeroTelephone
+                }
+            },
+            { new: true }
+        )
+        res.status(200).json(updatedAddress)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+};
+
+// ====================
+// DELETE MY ADDRESS (USER)
+// ====================
+
+// Permet à l'utilisateur connecté de supprimer une de ses propres adresses.
+// L'adresse est recherchée avec son id + le member connecté pour éviter de supprimer l'adresse d'un autre user.
+
+export const deleteMyAddress = async (req, res) => {
+    try {
+        const address = await Address.findOne({
+            _id: req.params.id,
+            member: req.user.id
+        })
+        if (!address) {
+            return res.status(404).json("Address not found or not allowed !")
+        }
+        await Address.findByIdAndDelete(req.params.id)
+        res.status(200).json("Address deleted !")
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+};
+
+// ====================
+// ADMIN ADDRESS
+// ====================
+
+// Fonctions utilisées depuis le dashboard administrateur.
+// L'admin peut consulter, modifier ou supprimer les adresses à partir de leur id.
+
+// ====================
+// GET ALL ADDRESSES (ADMIN)
+// ====================
+
+// Récupération de toutes les adresses, utilisé côté admin
+
+export const getAddresses = async (req, res) => {
+    try {
+        const addresses = await Address.find().populate("member", "-password")
+        res.status(200).json(addresses);
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+};
+
+// ====================
+// GET ADDRESS BY ID (ADMIN)
 // ====================
 
 // Récupération d'une adresse spécifique via son ID, affichage ciblé
@@ -82,7 +157,7 @@ export const getAddressById = async (req, res) => {
 };
 
 // ====================
-// UPDATE ADDRESS (USER / ADMIN)
+// UPDATE ADDRESS (ADMIN)
 // ====================
 
 // Mise à jour d'une adresse
@@ -137,14 +212,33 @@ export const deleteAddress = async (req, res) => {
 // ====================
 
 /* 
-L'entité adresse est liée à l'entité membre (user).
+L'entité Address est liée à l'entité User grâce au champ member.
 
 Rôle dans le projet :
-- stocker les informations du membre (user), adresse et n° de téléphone
-- permettre au membre de gérer son profil
-- l'entité sert de base pour les futurs devis
+- stocker les adresses associées à un utilisateur ;
+- permettre à un utilisateur de posséder plusieurs adresses ;
+- permettre la gestion des adresses depuis la page Profil ;
+- préparer l'utilisation future d'une adresse lors d'une demande de devis.
 
-Utilisation :
-- côté user : page Profil (getMyAddress + update)
-- côté admin : gestion globale des adresses
+Organisation du controller :
+- une partie USER pour les actions réalisées depuis le profil utilisateur ;
+- une partie ADMIN pour les actions réalisées depuis le dashboard administrateur.
+
+Logique USER :
+- createAddress crée une adresse pour l'utilisateur connecté grâce à req.user.id ;
+- getMyAddress récupère uniquement les adresses du user connecté ;
+- updateMyAddress modifie une adresse seulement si elle appartient au user connecté ;
+- deleteMyAddress supprime une adresse seulement si elle appartient au user connecté.
+
+Logique ADMIN :
+- getAddresses récupère toutes les adresses pour le dashboard ;
+- getAddressById récupère une adresse précise ;
+- updateAddress permet à l'admin de modifier une adresse ciblée par son id ;
+- deleteAddress permet à l'admin de supprimer une adresse ciblée par son id.
+
+Point important :
+- req.user.id sert à identifier l'utilisateur connecté via le token ;
+- req.params.id sert à cibler une adresse précise dans l'URL ;
+- pour les actions user sensibles comme update/delete, on utilise les deux afin d'éviter qu'un utilisateur modifie ou supprime l'adresse d'un autre utilisateur.
+
 */
