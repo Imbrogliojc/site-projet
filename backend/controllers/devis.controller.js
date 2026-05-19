@@ -6,6 +6,7 @@
 // demande -> traitement -> validation -> réservation -> archivage
 
 import Devis from "../models/devis.model.js";
+import Reservation from "../models/reservation.model.js";
 import fs from "fs";
 import path from "path";
 import { sendMail } from "../services/mailer.js";
@@ -137,7 +138,8 @@ export const deleteDevis = async (req, res) => {
         const devis = await Devis.findById(req.params.id)
         if (!devis) return res.status(404).json("Devis not found !")
         await Devis.findByIdAndDelete(req.params.id)
-        res.status(200).json("Devis deleted !")
+        await Reservation.deleteOne({ devis: req.params.id })
+        res.status(200).json("Devis and reservation deleted !")
 
     } catch (error) {
         console.log(error)

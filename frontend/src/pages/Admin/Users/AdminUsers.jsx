@@ -69,7 +69,6 @@ const AdminUsers = () => {
 
                 <thead className="table-dark">
                     <tr>
-                        <th>ID</th>
                         <th>Nom</th>
                         <th>Email</th>
                         <th>Rôle</th>
@@ -80,8 +79,6 @@ const AdminUsers = () => {
                 <tbody>
                     {users.map((user) => (
                         <tr key={user._id}>
-
-                            <td className="text-muted small">{user._id}</td>
 
                             <td>{user.userName}</td>
 

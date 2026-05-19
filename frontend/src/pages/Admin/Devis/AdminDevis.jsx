@@ -172,7 +172,14 @@ const AdminDevis = () => {
                             <tr key={d._id}>
 
                                 {/* 🔹 CLIENT */}
-                                <td>{d.member?.userName}</td>
+                                <td><strong>{d.member?.userName || "-"}</strong>
+                                    {d.address && (
+                                        <div className="text-muted small mt-1">
+                                            {d.address.rue}<br />
+                                            {d.address.codePostal} {d.address.ville}<br />
+                                            {d.address.numeroTelephone}
+                                        </div>
+                                    )}</td>
 
                                 {/* 🔹 TYPE CLIENT */}
                                 <td>
@@ -370,7 +377,14 @@ const AdminDevis = () => {
                         <tr key={d._id}>
 
                             {/* 🔹 CLIENT */}
-                            <td>{d.member?.userName}</td>
+                            <td><strong>{d.member?.userName || "-"}</strong>
+                                {d.address && (
+                                    <div className="text-muted small mt-1">
+                                        {d.address.rue}<br />
+                                        {d.address.codePostal} {d.address.ville}<br />
+                                        {d.address.numeroTelephone}
+                                    </div>
+                                )}</td>
 
                             {/* 🔹 TYPE CLIENT */}
                             <td>
