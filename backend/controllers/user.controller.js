@@ -15,6 +15,8 @@ import crypto from "crypto";
 import { sendMail } from '../services/mailer.js';
 import { verifyEmailTemplate, resetPasswordTemplate } from "../services/templates/emailTemplates.js";
 
+import { validatePassword } from "../services/passwordValidator.js";
+
 // ====================
 // VERIFY EMAIL
 // ====================
@@ -94,6 +96,11 @@ export const resetPassword = async (req, res) => {
 
         if (!user) return res.status(400).json("Token invalide ou expiré !")
 
+        const passwordValidation = validatePassword(req.body.password)
+        if (!passwordValidation.isValid) {
+            return res.status(400).json("Le mot de passe ne respecte pas les règles de sécurité !")
+        }
+
         // Nouveau password hashed avec bcrypt
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
@@ -124,6 +131,11 @@ export const signup = async (req, res) => {
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
     try {
+        const passwordValidation = validatePassword(req.body.password)
+        if (!passwordValidation.isValid) {
+            return res.status(400).json("Le mot de passe ne respecte pas les règles de sécurité !")
+        }
+
         // Hash password + création de l'utilisateur avec le token de vérification
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         await User.create({ ...req.body, password: hashedPassword, verificationToken });
@@ -236,7 +248,7 @@ export const getUserById = async (req, res) => {
 
 export const getMyUser = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id)
+        const user = await User.findById(req.user.id).select("-password")
         res.status(200).json(user)
     } catch (error) {
         console.log(error)
@@ -300,6 +312,11 @@ export const updateMyPassword = async (req, res) => {
         const isMatch = await bcrypt.compare(req.body.oldPassword, user.password)
         if (!isMatch) return res.status(400).json("Mot de passe incorrect !")
 
+        const passwordValidation = validatePassword(req.body.newPassword)
+        if (!passwordValidation.isValid) {
+            return res.status(400).json("Le nouveau mot de passe ne respecte pas les règles de sécurité !")
+        }
+
         // Nouveau password hash
         const hashedPassword = await bcrypt.hash(req.body.newPassword, 10)
 
@@ -357,11 +374,19 @@ export const updateUser = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
         if (!user) return res.status(404).json('User not found !')
+
         const userUpdated = await User.findByIdAndUpdate(
             req.params.id,
-            { $set: req.body },
+            {
+                $set: {
+                    userName: req.body.userName,
+                    email: req.body.email,
+                    isAdmin: req.body.isAdmin
+                }
+            },
             { new: true }
-        )
+        ).select("-password")
+
         res.status(200).json({
             message: 'User updated',
             userUpdated

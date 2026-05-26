@@ -3,6 +3,9 @@ import { AuthContext } from "../../utils/context/AuthContext.jsx";
 import { FIELD_REGISTER } from "../../utils/constants/FieldRegister.js";
 import { Link } from "react-router-dom";
 
+import { validatePassword } from "../../utils/validators/passwordValidator.js";
+import PasswordChecklist from "../../components/Auth/PasswordChecklist.jsx";
+
 const Register = () => {
   const { register, error, isLoading } = useContext(AuthContext);
 
@@ -12,6 +15,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [passwordError, setPasswordError] = useState("")
 
   const handleChange = (event) => {
     setUser({
@@ -26,6 +30,20 @@ const Register = () => {
     if (!user.userName || !user.email || !user.password || !user.confirmPassword) {
       return;
     }
+
+    if (user.password !== user.confirmPassword) {
+      setPasswordError("Les mots de passe ne correspondent pas.")
+      return
+    }
+
+    const passwordValidation = validatePassword(user.password)
+
+    if (!passwordValidation.isValid) {
+      setPasswordError("Le mot de passe ne respecte pas les règles de sécurité.")
+      return
+    }
+
+    setPasswordError("")
 
     const { confirmPassword, ...dataToSend } = user;
     register(dataToSend);
@@ -60,8 +78,19 @@ const Register = () => {
                       onChange={handleChange}
                       className="form-control"
                     />
+
+                    {field.name === "password" && (
+                      <PasswordChecklist password={user.password} />
+                    )}
+
                   </div>
                 ))}
+
+                {passwordError && (
+                  <div className="alert alert-danger py-2" role="alert">
+                    {passwordError}
+                  </div>
+                )}
 
                 {error && (
                   <div className="alert alert-danger py-2" role="alert">

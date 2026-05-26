@@ -4,6 +4,9 @@ import URL from "../../config/api.js";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { validatePassword } from "../../utils/validators/passwordValidator.js";
+import PasswordChecklist from "../../components/Auth/PasswordChecklist.jsx";
+
 const ResetPassword = () => {
     const { token } = useParams();
     const navigate = useNavigate();
@@ -35,6 +38,13 @@ const ResetPassword = () => {
         if (passwordValues.password !== passwordValues.confirmPassword) {
             setErrorMessage("Les mots de passe ne correspondent pas.");
             return;
+        }
+
+        const passwordValidation = validatePassword(passwordValues.password)
+
+        if (!passwordValidation.isValid) {
+            setErrorMessage("Le mot de passe ne respecte pas les règles de sécurité.")
+            return
         }
 
         try {
@@ -91,6 +101,9 @@ const ResetPassword = () => {
                                         value={passwordValues.password}
                                         onChange={handleChange}
                                     />
+
+                                    <PasswordChecklist password={passwordValues.password} />
+
                                 </div>
 
                                 <div className="mb-3">

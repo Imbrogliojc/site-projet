@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 import URL from '../../config/api.js';
 
+import { validatePassword } from "../../utils/validators/passwordValidator.js";
+import PasswordChecklist from '../../components/Auth/PasswordChecklist.jsx';
+
 const formatDate = (date) => {
   if (!date) return "-"
   return new Date(date).toLocaleDateString("fr-FR")
@@ -32,8 +35,10 @@ const Profil = () => {
   })
   const [passwordValues, setPasswordValues] = useState({
     oldPassword: "",
-    newPassword: ""
+    newPassword: "",
+    confirmPassword: ""
   })
+  const [passwordError, setPasswordError] = useState("")
 
   // Partie devis
 
@@ -155,21 +160,44 @@ const Profil = () => {
   // Partie password
 
   const handleUpdatePassword = async () => {
+    if (!passwordValues.oldPassword || !passwordValues.newPassword || !passwordValues.confirmPassword) {
+      setPasswordError("Veuillez remplir tous les champs.")
+      return
+    }
+
+    if (passwordValues.newPassword !== passwordValues.confirmPassword) {
+      setPasswordError("Les mots de passe ne correspondent pas.")
+      return
+    }
+
+    const passwordValidation = validatePassword(passwordValues.newPassword)
+
+    if (!passwordValidation.isValid) {
+      setPasswordError("Le nouveau mot de passe ne respecte pas les règles de sécurité.")
+      return
+    }
+
     try {
       await axios.put(`${URL.USER}/password`,
-        passwordValues,
+        {
+          oldPassword: passwordValues.oldPassword,
+          newPassword: passwordValues.newPassword
+        },
         { withCredentials: true }
       )
 
       setPasswordValues({
         oldPassword: "",
-        newPassword: ""
+        newPassword: "",
+        confirmPassword: ""
       })
 
+      setPasswordError("")
       alert("Mot de passe mis à jour !")
 
     } catch (error) {
       console.log(error)
+      setPasswordError("Erreur lors de la modification du mot de passe.")
     }
   };
 
@@ -530,7 +558,7 @@ const Profil = () => {
             />
 
             <input
-              className="form-control mb-3"
+              className="form-control mb-2"
               type="password"
               placeholder="Nouveau mot de passe"
               value={passwordValues.newPassword}
@@ -538,6 +566,24 @@ const Profil = () => {
                 setPasswordValues(prev => ({ ...prev, newPassword: e.target.value }))
               }
             />
+
+            <PasswordChecklist password={passwordValues.newPassword} />
+
+            <input
+              className="form-control mb-3"
+              type="password"
+              placeholder="Confirmer le nouveau mot de passe"
+              value={passwordValues.confirmPassword}
+              onChange={(e) =>
+                setPasswordValues(prev => ({ ...prev, confirmPassword: e.target.value }))
+              }
+            />
+
+            {passwordError && (
+              <div className="alert alert-danger py-2" role="alert">
+                {passwordError}
+              </div>
+            )}
 
             <button className="btn btn-warning" onClick={handleUpdatePassword}>
               Modifier mot de passe
