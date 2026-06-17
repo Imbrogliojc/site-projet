@@ -17,31 +17,71 @@ const Profil = () => {
   const { currentUser, logout } = useContext(AuthContext)
   const navigate = useNavigate()
 
+// ====================
+// STATES — DEVIS & RÉSERVATIONS
+// ====================
+
+// Données récupérées avec fetchDevis()
+// Utilisées pour afficher les devis du user connecté
   const [myDevis, setMyDevis] = useState([])
+
+// Données récupérées avec fetchReservation()
+// Utilisées pour savoir si un devis possède déjà une réservation  
   const [myReservation, setMyReservation] = useState([])
+
+// ====================
+// STATES — PROFIL UTILISATEUR
+// ====================
+
+// Données récupérées avec fetchUser()
   const [user, setUser] = useState(null)
+
+// Active ou désactive le mode édition du profil
   const [editUser, setEditUser] = useState(false)
+
+// Valeurs du formulaire de modification du profil
   const [userValues, setUserValues] = useState({
     userName: "",
     email: ""
   })
+
+// ====================
+// STATES — ADRESSES UTILISATEUR
+// ====================
+
+// Données récupérées avec fetchAddress()
   const [addresses, setAddresses] = useState([])
+
+// Indique quelle adresse est en cours de création ou de modification
+// null = aucun formulaire ouvert
+// "new" = création d'une nouvelle adresse
+// id MongoDB = modification d'une adresse existante
   const [editId, setEditId] = useState(null)
+
+// Valeurs du formulaire d'adresse
+// Utilisées à la fois pour créer et modifier une adresse
   const [editValues, setEditValues] = useState({
     rue: "",
     codePostal: "",
     ville: "",
     numeroTelephone: ""
   })
+
+// ====================
+// STATES — MOT DE PASSE
+// ====================
+
+// Valeurs du formulaire de modification du mot de passe
   const [passwordValues, setPasswordValues] = useState({
     oldPassword: "",
     newPassword: "",
     confirmPassword: ""
   })
+
+// Message d'erreur affiché si la modification du mot de passe échoue
   const [passwordError, setPasswordError] = useState("")
 
-  // Partie devis
-
+// Partie devis
   const fetchDevis = async () => {
     try {
       const response = await axios.get(`${URL.DEVIS}/user`, { withCredentials: true })
@@ -53,8 +93,7 @@ const Profil = () => {
     }
   }
 
-  // Partie réservation
-
+// Partie réservation
   const fetchReservation = async () => {
     try {
       const response = await axios.get(`${URL.RESERVATIONS}/user`, { withCredentials: true })
@@ -66,8 +105,7 @@ const Profil = () => {
     }
   }
 
-  // Partie User
-
+// Partie User
   const fetchUser = async () => {
     try {
       const response = await axios.get(`${URL.USER}/profile`, {
@@ -96,8 +134,7 @@ const Profil = () => {
     }
   }
 
-  // Partie address
-
+// Partie address
   const fetchAddress = async () => {
     try {
       const response = await axios.get(`${URL.ADDRESS}/profile`, {
@@ -157,8 +194,7 @@ const Profil = () => {
     }
   }
 
-  // Partie password
-
+// Partie password
   const handleUpdatePassword = async () => {
     if (!passwordValues.oldPassword || !passwordValues.newPassword || !passwordValues.confirmPassword) {
       setPasswordError("Veuillez remplir tous les champs.")

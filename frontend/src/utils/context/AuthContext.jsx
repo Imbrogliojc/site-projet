@@ -66,6 +66,8 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    // Vérifier si une donnée utilisateur est présente dans le localStorage
+    // Restaurer "currentUser" après un rafraichissement de la page
     const isLoggedIn = () => {
         setIsLoading(true)
         try {

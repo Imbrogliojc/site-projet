@@ -59,13 +59,13 @@ const Login = () => {
                     />
                   </div>
                 ))}
-
+                {/* error sert à stocker une erreur liée à l'authentification */}
                 {error && (
                   <div className="alert alert-danger py-2" role="alert">
                     {error}
                   </div>
                 )}
-
+                {/* isLoading indique qu'une action est en cours */}
                 <button
                   type="submit"
                   disabled={isLoading}

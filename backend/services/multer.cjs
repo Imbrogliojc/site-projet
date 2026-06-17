@@ -1,4 +1,4 @@
-// Module pour gérer les opérations sur les fichiers
+// Module pour gérer les opérations sur les dossiers et fichiers
 const fs = require('fs')
 
 // Module pour gérer l'upload de fichiers

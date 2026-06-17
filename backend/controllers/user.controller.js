@@ -21,7 +21,7 @@ import { validatePassword } from "../services/passwordValidator.js";
 // VERIFY EMAIL
 // ====================
 
-// Vérifie le token reçu par email
+// Recherche en base un membre dont le champs "verificationToken" correspond au token reçu dans l'URL
 // Active le compte utilisateur
 
 export const verifyEmail = async (req, res) => {
@@ -365,10 +365,35 @@ export const deleteMyAccount = async (req, res) => {
 }
 
 // ====================
-// UPDATE USER
+// UPDATE USER (ADMIN)
 // ====================
 
-// Mise à jour d'un utilisateur (admin ou user)
+// Route protégée par verifieToken : l'utilisateur doit être connecté.
+// req.user.id identifie l'utilisateur connecté via le JWT.
+// req.params.id identifie l'utilisateur ciblé par l'action admin.
+
+// ATTENTION : verifieToken vérifie l'authentification, mais ne vérifie pas encore le rôle admin.
+// AMELIORATION PREVUE : ajouter un middleware verifyAdmin entre verifieToken et le controller.
+
+// Exemple futur : router.put('/update/', verifieToken, verifyAdmin, updateUser)
+// Choix actuel : ne pas dupliquer la vérification admin dans chaque controller, mais centraliser cette logique dans un middleware dédié.
+
+/*
+Solution non retenue pour l'instant : vérifier le rôle admin directement dans le controller.
+
+const connectedUser = await User.findById(req.user.id)
+
+if (!connectedUser || connectedUser.role !== "admin") {
+    return res.status(403).json("Accès non autorisé")
+}
+
+Cette solution fonctionne, mais elle mélange :
+- la vérification d'autorisation ;
+- et la logique métier du controller.
+
+Elle oblige aussi à répéter le même code dans plusieurs fonctions admin :
+updateUser, deleteUser, updateDevis, deleteDevis, updateReservation, etc.
+*/
 
 export const updateUser = async (req, res) => {
     try {
