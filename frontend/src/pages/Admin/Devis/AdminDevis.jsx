@@ -14,8 +14,10 @@ const formatTypeClient = (typeClient) => {
 
 const AdminDevis = () => {
     const [devis, setDevis] = useState([])
+    // State permet de savoir quel devis est en mode édition
     const [editId, setEditId] = useState(null)
     const [services, setServices] = useState([])
+    // State permet de savoir si un devis a généré une réservation
     const [reservations, setReservations] = useState([])
     const [editValues, setEditValues] = useState({
         prixTtc: "",
@@ -138,6 +140,7 @@ const AdminDevis = () => {
         }
     }
 
+    // Filtre pour les devis
     const devisEnCours = devis.filter(d => d.status !== "archived")
     const devisArchives = devis.filter(d => d.status === "archived")
 
@@ -163,6 +166,7 @@ const AdminDevis = () => {
                 </thead>
 
                 <tbody>
+                    {/* Je vérifie si une réservation existe pour le devis affiché. Adapter l'affichage du bouton réservation. */}
                     {devisEnCours.map((d) => {
                         const reservationExists = reservations.some(
                             (reservation) => reservation.devis?._id === d._id

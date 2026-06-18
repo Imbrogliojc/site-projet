@@ -514,8 +514,8 @@ const Profil = () => {
             </thead>
 
             <tbody>
+              {/* On récupère la réservation pour afficher son contenu. */}
               {myDevis?.map((devis) => {
-
                 const reservation = myReservation.find(
                   (r) => r.devis?._id === devis._id
                 );

@@ -9,6 +9,7 @@ export const createReservation = async (req, res) => {
         const reservation = await Reservation.create({
             devis: req.body.devis
         })
+        // Ici la réservation est enrichie avec les informations utiles à l'affichage. ID du devis est remplacé par le document devis complet.
         const reservationCreated = await Reservation.findById(reservation._id).populate({
             path: "devis",
             populate: [
@@ -42,12 +43,12 @@ export const getReservations = async (req, res) => {
     }
 };
 
-// FONCTION getMyReservation DEPUIS USER PROFILE
-
+// // Récupère les réservations du user connecté via le devis lié
 export const getMyReservation = async (req, res) => {
     try {
         const reservations = await Reservation.find()
             .populate({
+                // Reservation ne connait pas directement le user : on passe par le devis lié pour vérifier le member
                 path: "devis",
                 match: { member: req.user.id },
                 populate: [
@@ -55,7 +56,7 @@ export const getMyReservation = async (req, res) => {
                     { path: "service" }
                 ]
             })
-        // FILTRE : RESERVATION NE CONNAIT PAS MEMBER
+        // Supprime les réservations dont le devis ne correspond pas au user
         const filteredReservations = reservations.filter(res => res.devis !== null)
         res.status(200).json(filteredReservations)
 
