@@ -31,6 +31,7 @@ import Register from './pages/Auth/Register'
 import Login from './pages/Auth/Login'
 import ForgotPassword from './pages/Auth/ForgotPassword.jsx'
 import ResetPassword from './pages/Auth/ResetPassword.jsx'
+import VerifyEmail from './pages/Auth/VerifyEmail.jsx'
 
 // IMPORT DES PAGES PRIVEES
 import PrivateRoute from './utils/helpers/PrivateRoute.jsx'
@@ -42,8 +43,6 @@ function App() {
     <Routes>
 
       {/* ROUTES PUBLIQUES */}
-      {/* ROUTES PRIVEES */}
-
       <Route path='/' element={<Template />}>
 
         <Route index element={<Home />} />
@@ -60,7 +59,9 @@ function App() {
         <Route path='login' element={<Login />} />
         <Route path='forgotPassword' element={<ForgotPassword />} />
         <Route path='reset-password/:token' element={<ResetPassword />} />
+        <Route path='verify' element={<VerifyEmail />} />
 
+      {/* ROUTES PRIVEES */}
         <Route element={<PrivateRoute />}>
           <Route path='devis' element={<Devis />} />
           <Route path='profil' element={<Profil />} />
