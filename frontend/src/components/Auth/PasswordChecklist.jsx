@@ -5,7 +5,7 @@ const PasswordChecklist = ({ password }) => {
 
   const rules = [
     {
-      label: "Au moins 10 caractères",
+      label: "Au moins 12 caractères",
       valid: checks.minLength
     },
     {

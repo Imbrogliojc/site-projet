@@ -1,6 +1,6 @@
 export const validatePassword = (password) => {
     const checks = {
-        minLength: password.length >= 10,
+        minLength: password.length >= 12,
         hasUppercase: /[A-Z]/.test(password),
         hasLowercase: /[a-z]/.test(password),
         hasNumber: /[0-9]/.test(password),
