@@ -368,21 +368,20 @@ export const deleteMyAccount = async (req, res) => {
 // UPDATE USER (ADMIN)
 // ====================
 
-// Route protégée par verifieToken : l'utilisateur doit être connecté.
-// req.user.id identifie l'utilisateur connecté via le JWT.
-// req.params.id identifie l'utilisateur ciblé par l'action admin.
+// Route protégée par verifieToken : l'utilisateur doit être connecté
+// req.user.id identifie l'utilisateur connecté via le JWT
+// req.params.id identifie l'utilisateur ciblé par l'action admin
 
-// ATTENTION : verifieToken vérifie l'authentification, mais ne vérifie pas encore le rôle admin.
-// AMELIORATION PREVUE : ajouter un middleware verifyAdmin entre verifieToken et le controller.
+// ATTENTION : verifieToken vérifie l'authentification, mais ne vérifie pas encore le rôle admin
+// AMELIORATION PREVUE : ajouter un middleware verifyAdmin entre verifieToken et le controller
 
 // Exemple futur : router.put('/update/', verifieToken, verifyAdmin, updateUser)
-// Choix actuel : ne pas dupliquer la vérification admin dans chaque controller, mais centraliser cette logique dans un middleware dédié.
+// Choix actuel : ne pas dupliquer la vérification admin dans chaque controller, mais centraliser cette logique dans un middleware dédié
 
 /*
-Solution non retenue pour l'instant : vérifier le rôle admin directement dans le controller.
+Solution non retenue pour l'instant : vérifier le rôle admin directement dans le controller
 
 const connectedUser = await User.findById(req.user.id)
-
 if (!connectedUser || connectedUser.role !== "admin") {
     return res.status(403).json("Accès non autorisé")
 }
