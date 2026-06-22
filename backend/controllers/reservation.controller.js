@@ -1,7 +1,12 @@
 import Reservation from "../models/reservation.model.js"
+import User from "../models/user.model.js"
 
 export const createReservation = async (req, res) => {
     try {
+        const connectedUser = await User.findById(req.user.id)
+        if (!connectedUser || connectedUser.role !== "admin") {
+            return res.status(403).json("Accès non autorisé")
+        }
         const existing = await Reservation.findOne({ devis: req.body.devis });
         if (existing) {
             return res.status(400).json("Reservation already exists !")
